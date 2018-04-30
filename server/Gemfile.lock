@@ -53,6 +53,7 @@ GEM
     erubi (1.7.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    httpclient (2.8.3)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     loofah (2.2.2)
@@ -142,6 +143,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
+  httpclient
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rack-cors
