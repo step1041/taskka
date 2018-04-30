@@ -23,4 +23,13 @@ class User < ApplicationRecord
   def new_user?
     return self.username.nil?
   end
+
+  def provider_connected? (provider)
+    case provider
+      when "google"
+        return self.google_id.present?
+      else
+        return false
+    end
+  end
 end

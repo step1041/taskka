@@ -46,12 +46,17 @@ describe ApplicationController do
 
     context "when the access_token matches a user" do
       let (:user) { User.create() }
-      
+
       before { request.headers["Authorization"] = "Bearer #{user.access_token}" }
 
       it "lets the action run" do
         expect(controller).to receive(:index)
         get :index
+      end
+
+      it "sets the current_user in the request env" do
+        get :index
+        expect(request.env["current_user"]).to eq(user)
       end
     end
   end
