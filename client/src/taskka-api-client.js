@@ -2,6 +2,8 @@ import Request from 'request-promise';
 
 import config from './config';
 
+const ACCESS_TOKEN_KEY = "taskka.access_token";
+
 class TaskkaApiClient {
   static get(path) {
     return this.request({
@@ -20,7 +22,7 @@ class TaskkaApiClient {
   }
 
   static request(options, withAuthHeader=true) {
-    if (withAuthHeader) {
+    if (withAuthHeader && this.getAccessToken()) {
       if (!options.headers) {
         options.headers = {};
       }
@@ -34,15 +36,15 @@ class TaskkaApiClient {
   }
 
   static getAccessToken() {
-    return localStorage.getItem("taskka.access_token");
+    return localStorage.getItem(ACCESS_TOKEN_KEY);
   }
 
   static setAccessToken(token) {
-    localStorage.setItem("taskka.access_token", token);
+    localStorage.setItem(ACCESS_TOKEN_KEY, token);
   }
 
   static removeAccessToken() {
-    localStorage.removeItem("taskka.access_token")
+    localStorage.removeItem(ACCESS_TOKEN_KEY)
   }
 }
 

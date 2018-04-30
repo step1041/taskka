@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Request from 'request-promise';
+
+import TaskkaApiClient from '../taskka-api-client';
 
 class VerifyPage extends Component {
   constructor() {
@@ -38,14 +39,11 @@ class VerifyPage extends Component {
         throw error;
     }
 
-    Request({
-      method: 'POST',
-      uri: 'http://localhost:3000/auth/google/verify',
-      body: {access_token},
-      json: true,
-    })
-      .then((parsedBody) => console.log(parsedBody))
-      .catch((err) => console.log(err));
+    TaskkaApiClient
+      .post('/auth/google/verify', { access_token })
+      .then((body) => {
+        TaskkaApiClient.setAccessToken(body.access_token);
+      });
   }
 
   getGoogleAccessToken() {
