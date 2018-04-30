@@ -1,5 +1,5 @@
 describe GoogleOauthClient do
-  describe '::verify_code' do
+  describe '::get_user_id' do
     let(:access_token) { "Example access token" }
 
     before do
@@ -9,7 +9,7 @@ describe GoogleOauthClient do
     end
 
     it 'checks the token is valid' do
-      GoogleOauthClient::verify_code(access_token)
+      GoogleOauthClient::get_user_id(access_token)
 
       expect(
         a_request(:get, "https://www.googleapis.com/oauth2/v3/tokeninfo")
@@ -18,14 +18,15 @@ describe GoogleOauthClient do
     end
 
     context 'when the token is valid' do
+      let (:google_id) { "Example google user id"}
       before do
         stub_request(:get, "https://www.googleapis.com/oauth2/v3/tokeninfo")
           .with(query: { :access_token => access_token })
-          .to_return(google_mock_valid_token)
+          .to_return(google_mock_valid_token(user_id: google_id))
       end
 
-      it 'responds true' do
-        expect(GoogleOauthClient::verify_code(access_token)).to eq(true)
+      it "responds with the user's google id" do
+        expect(GoogleOauthClient::get_user_id(access_token)).to eq(google_id)
       end
     end
 
@@ -37,7 +38,7 @@ describe GoogleOauthClient do
       end
 
       it 'raises an error' do
-        expect{GoogleOauthClient::verify_code(access_token)}
+        expect{GoogleOauthClient::get_user_id(access_token)}
           .to raise_error(GoogleOauthClient::AuthError, "Invalid token")
       end
     end
@@ -50,7 +51,7 @@ describe GoogleOauthClient do
       end
 
       it 'raises an error' do
-        expect{GoogleOauthClient::verify_code(access_token)}
+        expect{GoogleOauthClient::get_user_id(access_token)}
           .to raise_error(GoogleOauthClient::AuthError, "Invalid token")
       end
     end

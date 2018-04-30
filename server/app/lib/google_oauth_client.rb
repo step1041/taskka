@@ -3,7 +3,7 @@ require 'jsonclient'
 class GoogleOauthClient
   GOOGLE_ENDPOINT = "https://www.googleapis.com/oauth2/v3/tokeninfo"
 
-  def self.verify_code(access_token)
+  def self.get_user_id(access_token)
     url = "#{GOOGLE_ENDPOINT}?access_token=#{access_token}"
     res = JSONClient.get(url)
     google_data = res.body
@@ -12,7 +12,7 @@ class GoogleOauthClient
       raise AuthError.new("Invalid token")
     end
 
-    return true
+    return google_data['user_id']
   end
 
   class AuthError < StandardError

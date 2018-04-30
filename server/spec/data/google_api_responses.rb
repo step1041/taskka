@@ -1,4 +1,4 @@
-def google_mock_valid_token(userid="foobar")
+def google_mock_valid_token(user_id: "foobar")
   return {
     status: 200,
     :headers => {
@@ -8,7 +8,7 @@ def google_mock_valid_token(userid="foobar")
       aud: Rails.application.secrets.GOOGLE_CLIENT_ID,
       expires_in: 3600,
       scope: 'scopes',
-      userid: userid,
+      user_id: user_id,
     }.to_json
   }
 end
@@ -25,7 +25,7 @@ def google_mock_invalid_token()
   }
 end
 
-def google_mock_invalid_aud(userid="foobar")
+def google_mock_invalid_aud(user_id: "foobar")
   return {
     status: 200,
     :headers => {
@@ -35,7 +35,7 @@ def google_mock_invalid_aud(userid="foobar")
       aud: "unexpected client id",
       expires_in: 3600,
       scope: 'scopes',
-      userid: userid,
+      user_id: user_id,
     }.to_json
   }
 end
