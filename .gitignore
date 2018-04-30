@@ -2,3 +2,5 @@
 server/\.idea/
 
 client/\.idea/
+
+server/config/secrets\.yml
