@@ -3,15 +3,16 @@ class UserController < ApplicationController
 
   def current_user
     user = request.env["current_user"]
+    render json: { user: user }
+  end
 
-    data = {
-      username: user.username,
-      access_token: user.access_token,
-      connections: {
-        google: user.provider_connected?("google")
-      }
-    }
+  def update
+    attributes = params.permit(user: [ :username ])["user"]
+    user = request.env["current_user"]
 
-    render json: data
+    user.update_attributes(attributes)
+    user.save
+
+    render json: { user: user }
   end
 end

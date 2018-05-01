@@ -21,6 +21,15 @@ class TaskkaApiClient {
     })
   }
 
+  static patch(path, body) {
+    return this.request({
+      method: "PATCH",
+      uri: config.serverUrl + path,
+      body,
+      json: true,
+    })
+  }
+
   static request(options, withAuthHeader=true) {
     if (withAuthHeader && this.getAccessToken()) {
       if (!options.headers) {

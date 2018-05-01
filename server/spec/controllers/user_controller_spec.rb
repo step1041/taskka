@@ -19,37 +19,29 @@ describe UserController do
         get :current_user
 
         body = JSON.parse(response.body)
-        expect(body["username"]).to eq(user.username)
-        expect(body["access_token"]).to eq(user.access_token)
+        user_json = body["user"]
+        expect(user_json["username"]).to eq(user.username)
+        expect(user_json["access_token"]).to eq(user.access_token)
       end
+    end
+  end
 
-      describe "user's connections" do
-        context "when connected to google" do
-          before do
-            user.google_id = "example google id"
-            user.save!
-          end
+  describe "PATCH #update" do
+    it "calls authorize" do
+      expect(controller).to receive(:authorize).and_call_original
+      get :current_user
+    end
 
-          it "is listed as true" do
-            get :current_user
+    context "when authorized" do
+      let (:user) { User.create }
 
-            body = JSON.parse(response.body)
-            expect(body["connections"]["google"]).to eq(true)
-          end
-        end
+      before { authorize_user(user) }
 
-        context "when not connected to google" do
-          before do
-            user.google_id = nil
-            user.save!
-          end
-
-          it "is listed as false" do
-            get :current_user
-
-            body = JSON.parse(response.body)
-            expect(body["connections"]["google"]).to eq(false)
-          end
+      context "when a username is given" do
+        it "updates the current user's name" do
+          patch :update, params: { user: { username: "NewUsername"} }
+          user.reload
+          expect(user.username).to eq("NewUsername")
         end
       end
     end

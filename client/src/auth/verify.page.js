@@ -43,6 +43,12 @@ class VerifyPage extends Component {
       .post('/auth/google/verify', { access_token })
       .then((body) => {
         TaskkaApiClient.setAccessToken(body.access_token);
+        if (body.new_user) {
+          this.props.history.push('/user/new')
+        }
+        else {
+          this.props.history.push('/tasks')
+        }
       });
   }
 

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-
-import LoginDialog from './auth/login-dialog';
-
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
+
+import LoginPage from './auth/login.page'
+
 import VerifyPage from './auth/verify.page';
+import NewUserPage from './user/new-user.page';
+import TaskListPage from './tasks/task-list.page';
 
 class App extends Component {
   render() {
@@ -12,8 +14,11 @@ class App extends Component {
       <div className="App">
         <BrowserRouter>
           <Switch>
-            <Route exact path={'/'} component={LoginDialog}/>
-            <Route path={'/auth/:provider/callback'} component={VerifyPage}/>
+            <Route exact path={'/'} component={LoginPage} />
+            <Route path={'/auth/:provider/callback'} component={VerifyPage} />
+            <Route path={'/user/new'} component={NewUserPage} />
+            <Route path={'/tasks'} component={TaskListPage} />
+            <Route><div>Default</div></Route>
           </Switch>
         </BrowserRouter>
       </div>
