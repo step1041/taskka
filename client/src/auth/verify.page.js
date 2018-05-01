@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {push} from 'react-router-redux';
+
+import {setUser} from '../actions/user.actions';
 
 import TaskkaApiClient from '../taskka-api-client';
+
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onLoginComplete: (user, isNewUser) => {
+    dispatch(setUser(user));
+    dispatch(push(isNewUser ? '/user/new' : '/tasks'));
+  }
+});
+
 
 class VerifyPage extends Component {
   constructor() {
@@ -46,7 +61,7 @@ class VerifyPage extends Component {
       })
       .then((body) => {
         TaskkaApiClient.setAccessToken(body.access_token);
-        this.props.onLoginComplete(body.new_user);
+        this.props.onLoginComplete(body.user, body.new_user);
       });
   }
 
@@ -71,5 +86,8 @@ class VerifyPage extends Component {
   }
 };
 
-export default VerifyPage;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(VerifyPage);
 

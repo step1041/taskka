@@ -1,7 +1,9 @@
 import {routerReducer} from 'react-router-redux';
+import userReducer from './user.reducer';
 
 const reducers = {
-  routing: routerReducer,
+  router: routerReducer,
+  user: userReducer,
 };
 
 export default reducers;

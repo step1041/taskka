@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {push} from 'react-router-redux';
+
 import TaskkaApiClient from '../taskka-api-client';
+
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onSaveUser: () => { dispatch(push('/')) }
+});
 
 class NewUserPage extends Component {
   constructor() {
@@ -40,14 +50,11 @@ class NewUserPage extends Component {
     e.preventDefault();
 
     if (this.state.username) {
-      TaskkaApiClient.patch('/user', {
-        user: {
-          username: this.state.username
-        }
-      })
-        .then(() => {
-          this.props.history.push('/tasks')
+      TaskkaApiClient
+        .patch('/user', {
+          user: { username: this.state.username }
         })
+        .then(() => this.props.onSaveUser());
     }
     else {
       this.setState({usernameError: "A username is required"})
@@ -55,4 +62,7 @@ class NewUserPage extends Component {
   }
 }
 
-export default NewUserPage;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NewUserPage);
