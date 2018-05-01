@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux'
+import createHistory from 'history/createBrowserHistory'
+import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
+
+import reducers from './reducers';
+import AppLayout from './layouts/app.layout';
+
 import './App.css';
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
-import LoginPage from './auth/login.page'
+// Create a history of your choosing (we're using a browser history in this case)
+const history = createHistory();
 
-import VerifyPage from './auth/verify.page';
-import NewUserPage from './user/new-user.page';
-import TaskListPage from './tasks/task-list.page';
+const store = createStore(
+  combineReducers(reducers),
+  applyMiddleware(routerMiddleware(history))
+);
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <BrowserRouter>
-          <Switch>
-            <Route exact path={'/'} component={LoginPage} />
-            <Route path={'/auth/:provider/callback'} component={VerifyPage} />
-            <Route path={'/user/new'} component={NewUserPage} />
-            <Route path={'/tasks'} component={TaskListPage} />
-            <Route><div>Default</div></Route>
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <AppLayout/>
+        </ConnectedRouter>
+      </Provider>
     );
   }
 }
