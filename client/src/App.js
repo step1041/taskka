@@ -3,6 +3,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux'
 import createHistory from 'history/createBrowserHistory'
 import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 
 import reducers from './reducers';
 import AppLayout from './layouts/app.layout';
@@ -14,7 +15,9 @@ const history = createHistory();
 
 const store = createStore(
   combineReducers(reducers),
-  applyMiddleware(routerMiddleware(history))
+  composeWithDevTools(
+    applyMiddleware(routerMiddleware(history))
+  )
 );
 
 class App extends Component {
