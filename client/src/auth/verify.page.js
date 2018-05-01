@@ -18,7 +18,7 @@ class VerifyPage extends Component {
       <div>
         {
           !this.state.error
-          ? <div>Finding new secrets...</div>
+          ? <div>Summoning the bards</div>
           : <div>{this.state.error}</div>
         }
       </div>
@@ -28,10 +28,10 @@ class VerifyPage extends Component {
   verifyLogin() {
     let provider = this.props.match.params.provider;
 
-    let access_token = null;
+    let code = null;
     switch (provider) {
       case 'google':
-        access_token = this.getGoogleAccessToken();
+        code = this.getGoogleAccessCode();
         break;
       default:
         let error = new Error("Unknown Provider");
@@ -40,22 +40,20 @@ class VerifyPage extends Component {
     }
 
     TaskkaApiClient
-      .post('/auth/google/verify', { access_token })
+      .post('/auth/google/verify', {
+        code,
+        redirect_uri: window.location.origin + window.location.pathname,
+      })
       .then((body) => {
         TaskkaApiClient.setAccessToken(body.access_token);
-        if (body.new_user) {
-          this.props.history.push('/user/new')
-        }
-        else {
-          this.props.history.push('/tasks')
-        }
+        this.props.onLoginComplete(body.new_user);
       });
   }
 
-  getGoogleAccessToken() {
+  getGoogleAccessCode() {
     let data = {};
 
-    window.location.hash
+    window.location.search
       .substr(1)
       .split('&')
       .forEach((pair) => {
@@ -69,7 +67,7 @@ class VerifyPage extends Component {
       throw error;
     }
 
-    return data.access_token;
+    return data.code;
   }
 };
 
