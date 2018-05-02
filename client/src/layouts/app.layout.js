@@ -2,30 +2,50 @@ import React, { Component } from "react";
 import {connect} from 'react-redux';
 import {Route, Redirect} from 'react-router'
 
-import ConnectedSwitch from '../lib/connected-switch';
+import {setUser} from '../actions/user.actions';
 
-import VerifyPage from '../auth/verify.page';
-import LoginPage from '../auth/login.page';
+import ConnectedSwitch from '../lib/connected-switch';
+import errorHandler from '../lib/error-handler';
+
+import UserInfo from '../components/user/user-info';
+
+import LoginPage from '../pages/login.page';
+import LogoutPage from '../pages/logout.page';
+import VerifyPage from '../pages/verify.page';
 import TaskListPage from '../tasks/task-list.page';
-import NewUserPage from '../user/new-user.page';
-import TaskkaApiClient from '../taskka-api-client';
+import NewUserPage from '../pages/new-user.page';
+import TaskkaApiClient from '../lib/taskka-api-client';
 
 const mapStateToProps = (state) => ({
-  userLoggedIn: TaskkaApiClient.getAccessToken() !== null,
+  user: state.user,
+  accessToken: state.accessToken,
 });
 
 class AppLayout extends Component {
+  componentWillMount() {
+    if (!this.props.user && this.props.accessToken) {
+      TaskkaApiClient
+        .get('/user/current_user')
+        .then((response) => {
+          this.props.dispatch(setUser(response.user));
+        })
+        .catch(errorHandler)
+    }
+  }
+
   render () {
     return (
       <div>
         AppLayout
+        <UserInfo/>
         <ConnectedSwitch>
           <Route path={'/login'} component={LoginPage} />
+          <Route path={'/logout'} component={LogoutPage} />
           <Route path={'/auth/:provider/callback'} component={VerifyPage} />
           <Route path={'/user/new'} component={NewUserPage} />
           <Route path={'/tasks'} component={TaskListPage} />
           <Route>
-            { this.props.userLoggedIn ? <Redirect to={'/tasks'} /> : <Redirect to={'/login'} /> }
+            { this.props.accessToken ? <Redirect to={'/tasks'} /> : <Redirect to={'/login'} /> }
           </Route>
         </ConnectedSwitch>
       </div>

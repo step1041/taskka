@@ -1,8 +1,13 @@
-const setUser = (user) => ({
-  type: 'SET_USER',
+export const setUser = (user) => ({
+  type: 'USER.SET',
   data: { user },
 });
 
-export {
-  setUser,
-}
+export const login = (user) => ({
+  type: 'USER.LOGIN',
+  data: { user }
+});
+
+export const logout = () => ({
+  type: 'USER.LOGOUT',
+});

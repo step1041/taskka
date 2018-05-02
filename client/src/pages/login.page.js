@@ -2,21 +2,14 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 
-import LoginDialog from './login-dialog';
-import TaskkaApiClient from '../taskka-api-client';
+import LoginDialog from '../components/auth/login-dialog';
 
 const mapStateToProps = (state) => ({
-  userLoggedIn: TaskkaApiClient.getAccessToken() !== null,
+  userLoggedIn: state.accessToken !== null,
 });
-
-const mapDispatchToProps = (dispatch) => ({
-});
-
 
 class LoginPage extends Component {
   render() {
-    console.log(this.props)
-
     if (this.props.userLoggedIn) {
       return <Redirect to={'/'} />
     }
@@ -31,6 +24,5 @@ class LoginPage extends Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
 )(LoginPage);
 

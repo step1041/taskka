@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 
-import TaskkaApiClient from '../taskka-api-client';
+import TaskkaApiClient from '../lib/taskka-api-client';
 import errorHandler from '../lib/error-handler';
+import {setUser} from '../actions/user.actions';
 
 const mapStateToProps = (state) => ({
 });
@@ -51,7 +52,10 @@ class NewUserPage extends Component {
         .patch('/user', {
           user: { username: this.state.username }
         })
-        .then(() => this.props.dispatch(push('/')))
+        .then((response) => {
+          this.props.dispatch(setUser(response.user));
+          this.props.dispatch(push('/'));
+        })
         .catch(errorHandler);
     }
     else {

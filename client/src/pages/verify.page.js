@@ -2,20 +2,12 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 
-import {setUser} from '../actions/user.actions';
+import {login} from '../actions/user.actions';
 
-import TaskkaApiClient from '../taskka-api-client';
+import TaskkaApiClient from '../lib/taskka-api-client';
 
 const mapStateToProps = (state) => ({
 });
-
-const mapDispatchToProps = (dispatch) => ({
-  onLoginComplete: (user, isNewUser) => {
-    dispatch(setUser(user));
-    dispatch(push(isNewUser ? '/user/new' : '/tasks'));
-  }
-});
-
 
 class VerifyPage extends Component {
   constructor() {
@@ -55,13 +47,13 @@ class VerifyPage extends Component {
     }
 
     TaskkaApiClient
-      .post('/auth/google/verify', {
+      .post(`/auth/${provider}/verify`, {
         code,
         redirect_uri: window.location.origin + window.location.pathname,
       })
       .then((body) => {
-        TaskkaApiClient.setAccessToken(body.access_token);
-        this.props.onLoginComplete(body.user, body.new_user);
+        this.props.dispatch(login(body.user));
+        this.props.dispatch(push(body.new_user ? '/user/new' : '/tasks'));
       });
   }
 
@@ -84,10 +76,9 @@ class VerifyPage extends Component {
 
     return data.code;
   }
-};
+}
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
 )(VerifyPage);
 
