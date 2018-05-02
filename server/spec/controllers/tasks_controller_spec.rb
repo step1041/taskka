@@ -43,6 +43,50 @@ describe TasksController do
     end
   end
 
+  describe "PUT #create" do
+    it "calls authorize" do
+      expect(controller).to receive(:authorize).and_call_original
+      get :view, params: { :id => 1 }
+    end
+
+    context "when authorized" do
+      let(:user) { User.create() }
+
+      before { authorize_user(user) }
+
+      it "creates a new task" do
+        expect {
+          put :create, params: { task: {
+            name: "Example Task"
+          } }
+        }.to change { Task.count }.by(1)
+      end
+
+      it "sets the correct name on the new task" do
+        expect {
+          put :create, params: { task: {
+            name: "Example Task"
+          } }
+        }.to change { Task.count }.by(1)
+
+        task = Task.last
+        expect(task.name).to eq("Example Task")
+      end
+
+      it "responds with the new task" do
+        put :create, params: { task: {
+          name: "Example Task"
+        } }
+
+        expect(response.status).to eq(201)
+
+        task = Task.last
+        body = JSON.parse(response.body)
+        expect(body["task"]).to eq(JSON.parse(task.to_json))
+      end
+    end
+  end
+
   describe "GET #view" do
     it "calls authorize" do
       expect(controller).to receive(:authorize).and_call_original
