@@ -43,10 +43,10 @@ describe TasksController do
     end
   end
 
-  describe "PUT #create" do
+  describe "POST #create" do
     it "calls authorize" do
       expect(controller).to receive(:authorize).and_call_original
-      get :view, params: { :id => 1 }
+      post :create
     end
 
     context "when authorized" do
@@ -64,7 +64,7 @@ describe TasksController do
 
       it "sets the correct name on the new task" do
         expect {
-          put :create, params: { task: {
+          post :create, params: { task: {
             name: "Example Task"
           } }
         }.to change { Task.count }.by(1)
@@ -74,7 +74,7 @@ describe TasksController do
       end
 
       it "responds with the new task" do
-        put :create, params: { task: {
+        post :create, params: { task: {
           name: "Example Task"
         } }
 
