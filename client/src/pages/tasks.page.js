@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
   tasks: state.tasks,
 });
 
-class TaskListPage extends Component {
+class TasksPage extends Component {
   componentWillMount() {
     TaskkaApiClient
       .get('/tasks')
@@ -36,4 +36,4 @@ class TaskListPage extends Component {
 
 export default connect(
   mapStateToProps,
-)(TaskListPage);
+)(TasksPage);

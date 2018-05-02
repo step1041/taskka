@@ -12,7 +12,7 @@ import UserInfo from '../components/user/user-info';
 import LoginPage from '../pages/login.page';
 import LogoutPage from '../pages/logout.page';
 import VerifyPage from '../pages/verify.page';
-import TaskListPage from '../tasks/task-list.page';
+import TasksPage from '../pages/tasks.page';
 import NewUserPage from '../pages/new-user.page';
 import TaskkaApiClient from '../lib/taskka-api-client';
 
@@ -43,7 +43,7 @@ class AppLayout extends Component {
           <Route path={'/logout'} component={LogoutPage} />
           <Route path={'/auth/:provider/callback'} component={VerifyPage} />
           <Route path={'/user/new'} component={NewUserPage} />
-          <Route path={'/tasks'} component={TaskListPage} />
+          <Route path={'/tasks'} component={TasksPage} />
           <Route>
             { this.props.accessToken ? <Redirect to={'/tasks'} /> : <Redirect to={'/login'} /> }
           </Route>
