@@ -7,6 +7,10 @@ describe User do
     it { is_expected.to respond_to(:google_token) }
   end
 
+  describe 'relations' do
+    it { is_expected.to respond_to(:tasks) }
+  end
+
   describe "creation" do
     context "when no access_token is given" do
       it "is created with an random access_token" do
