@@ -3,4 +3,8 @@ Rails.application.routes.draw do
 
   get 'user/current_user'
   patch 'user', to: 'user#update'
+
+  get 'tasks', to: 'tasks#index'
+  get 'tasks/:id', to: 'tasks#view'
+  patch 'tasks', to: 'tasks#update'
 end
