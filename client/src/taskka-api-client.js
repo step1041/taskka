@@ -8,7 +8,8 @@ class TaskkaApiClient {
   static get(path) {
     return this.request({
       method: "GET",
-      uri: config.serverUrl + path
+      uri: config.serverUrl + path,
+      json: true,
     })
   }
 
