@@ -6,5 +6,5 @@ Rails.application.routes.draw do
 
   get 'tasks', to: 'tasks#index'
   get 'tasks/:id', to: 'tasks#view'
-  patch 'tasks', to: 'tasks#update'
+  patch 'tasks/:id', to: 'tasks#update'
 end
