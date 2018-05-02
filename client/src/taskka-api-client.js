@@ -31,18 +31,27 @@ class TaskkaApiClient {
     })
   }
 
-  static request(options, withAuthHeader=true) {
-    if (withAuthHeader && this.getAccessToken()) {
-      if (!options.headers) {
-        options.headers = {};
-      }
-
-      Object.assign(options.headers, {
-        "Authorization": "Bearer " + this.getAccessToken(),
-      });
+  static request(options) {
+    if (!options.headers) {
+      options.headers = {};
     }
 
-    return Request(options);
+    Object.assign(options.headers, {
+      "Authorization": "Bearer " + this.getAccessToken(),
+    });
+
+    return Request(options)
+      .catch((error) => {
+        if (error.statusCode === 401) {
+          this.removeAccessToken();
+
+          let newError = new Error("Not Authorized");
+          newError.name = "TaskkaApiError";
+          throw newError;
+        }
+
+        throw error;
+      });
   }
 
   static getAccessToken() {
