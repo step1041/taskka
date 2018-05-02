@@ -23,6 +23,10 @@ class ApplicationController < ActionController::API
 
   private
 
+  def current_user
+    return request.env["current_user"]
+  end
+
   def not_authorized
     render json: { error: "Not Authorized" }, status: 401
   end
