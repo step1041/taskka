@@ -25,7 +25,7 @@ class AppLayout extends Component {
   componentWillMount() {
     if (!this.props.user && this.props.accessToken) {
       TaskkaApiClient
-        .get('/user/current_user')
+        .get('/user')
         .then((response) => {
           this.props.dispatch(setUser(response.user));
         })

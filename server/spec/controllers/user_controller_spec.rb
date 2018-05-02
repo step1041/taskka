@@ -1,8 +1,8 @@
 describe UserController do
-  describe "GET #current_user" do
+  describe "GET #view" do
     it "calls authorize" do
       expect(controller).to receive(:authorize).and_call_original
-      get :current_user
+      get :view
     end
 
     context "when authorized" do
@@ -11,12 +11,12 @@ describe UserController do
       before { authorize_user(user) }
 
       it "returns http success" do
-        get :current_user
+        get :view
         expect(response).to have_http_status(200)
       end
 
       it "returns data about the user" do
-        get :current_user
+        get :view
 
         body = JSON.parse(response.body)
         user_json = body["user"]
@@ -29,7 +29,7 @@ describe UserController do
   describe "PATCH #update" do
     it "calls authorize" do
       expect(controller).to receive(:authorize).and_call_original
-      get :current_user
+      get :view
     end
 
     context "when authorized" do

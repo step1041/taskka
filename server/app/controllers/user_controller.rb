@@ -1,7 +1,7 @@
 class UserController < ApplicationController
   before_action :authorize
 
-  def current_user
+  def view
     user = request.env["current_user"]
     render json: { user: user }
   end
