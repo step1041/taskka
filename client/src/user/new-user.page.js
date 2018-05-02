@@ -3,12 +3,9 @@ import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 
 import TaskkaApiClient from '../taskka-api-client';
+import errorHandler from '../lib/error-handler';
 
 const mapStateToProps = (state) => ({
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onSaveUser: () => { dispatch(push('/')) }
 });
 
 class NewUserPage extends Component {
@@ -54,7 +51,8 @@ class NewUserPage extends Component {
         .patch('/user', {
           user: { username: this.state.username }
         })
-        .then(() => this.props.onSaveUser());
+        .then(() => this.props.dispatch(push('/')))
+        .catch(errorHandler);
     }
     else {
       this.setState({usernameError: "A username is required"})
@@ -64,5 +62,4 @@ class NewUserPage extends Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
 )(NewUserPage);
