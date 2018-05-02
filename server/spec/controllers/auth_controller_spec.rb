@@ -1,10 +1,40 @@
 describe AuthController do
-  describe "GET #get_user_id" do
+  describe "GET #verify" do
     let (:provider) { "google" }
+    let (:redirect_uri) { "http://example/auth/google/callback" }
+    let (:access_code) { "test access_code" }
     let (:access_token) { "test access_token" }
+    let (:google_id) { "google user id"}
+
+    before do
+      allow(GoogleOauthClient).to receive(:get_access_token).and_return(access_token)
+      allow(GoogleOauthClient).to receive(:get_user_id).and_return(google_id)
+    end
 
     def do_request
-      post :verify, params: { provider: provider, access_token: access_token, format: :json }
+      post :verify, params: {
+        provider: provider,
+        code: access_code,
+        redirect_uri: redirect_uri,
+        format: :json
+      }
+    end
+
+    it 'attempts to get an access_token' do
+      expect(GoogleOauthClient).to receive(:get_access_token).with(access_code, redirect_uri).once
+      do_request
+    end
+
+    context 'when the access code is invalid' do
+      before { allow(GoogleOauthClient).to receive(:get_access_token).and_raise(GoogleOauthClient::AuthError.new("Invalid code")) }
+
+      it 'creates an error response' do
+        do_request
+
+        body = JSON.parse(response.body)
+        expect(response.status).to eq(400)
+        expect(body['error']).to eq("Invalid code")
+      end
     end
 
     it 'validates the access_token' do
@@ -12,7 +42,7 @@ describe AuthController do
       do_request
     end
 
-    context 'when the token is valid' do
+    context 'when the access token is valid' do
       let (:google_id) {'example google id'}
 
       before do
@@ -29,6 +59,13 @@ describe AuthController do
           body = JSON.parse(response.body)
           expect(body['new_user']).to eq(true)
         end
+
+        it "responds with the user's data" do
+          do_request
+          user = User.last
+          body = JSON.parse(response.body)
+          expect(body['user']).to eq(JSON.parse(user.to_json))
+        end
       end
 
       context 'when the user already exists' do
@@ -44,15 +81,15 @@ describe AuthController do
           expect(body['new_user']).to eq(false)
         end
 
-        it "responds with the user's access token" do
+        it "responds with the user's data" do
           do_request
           body = JSON.parse(response.body)
-          expect(body['access_token']).to eq(user.access_token)
+          expect(body['user']).to eq(JSON.parse(user.to_json))
         end
       end
     end
 
-    context 'when the token is invalid' do
+    context 'when the access token is invalid' do
       before do
         allow(GoogleOauthClient).to receive(:get_user_id).and_raise(GoogleOauthClient::AuthError.new("Invalid token"))
       end
