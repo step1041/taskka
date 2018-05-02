@@ -20,7 +20,7 @@ class GoogleOauthClient
     google_data = JSON.parse(res.body)
 
     if google_data['error']
-      raise AuthError.new("Invalid token")
+      raise AuthError.new("Invalid code")
     end
 
     return google_data["access_token"]
