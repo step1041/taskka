@@ -6,10 +6,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    task_info = params.permit(task: [:name, :state, :notes])['task']
-
-    current_user.tasks.create(task_info)
-
+    current_user.tasks.create(task_params)
     render json: { task: current_user.tasks.last }, status: 201
   end
 
@@ -20,4 +17,10 @@ class TasksController < ApplicationController
   def update
 
   end
+
+  private
+
+    def task_params
+      params.require(:task).permit(:name, :state, :notes)
+    end
 end
