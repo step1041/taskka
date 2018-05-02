@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+
 import TaskkaApiClient from '../lib/taskka-api-client';
-import {setTasks} from '../actions/task.actions';
 import errorHandler from '../lib/error-handler';
+
+import {setTasks} from '../actions/task.actions';
+
+import TaskList from '../components/tasks/task-list';
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -24,11 +28,7 @@ class TasksPage extends Component {
     return (
       <div>
         Hello {this.props.user.username}! Here are a list of your tasks...
-        <ul>
-          {this.props.tasks.map((task) => (
-            <li key={task.id}>{task.name} ({task.state})</li>
-          ))}
-        </ul>
+        <TaskList />
       </div>
     )
   }
