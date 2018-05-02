@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import AddTask from './add-task';
 import Task from './task';
 
 const mapStateToProps = (state) => ({
@@ -15,6 +16,7 @@ class TaskList extends Component {
           {this.props.tasks.map((task) => (
             <Task key={task.id} task={task}/>
           ))}
+          <li><AddTask /></li>
         </ul>
       </div>
     )
