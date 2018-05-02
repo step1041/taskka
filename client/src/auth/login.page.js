@@ -3,9 +3,10 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 
 import LoginDialog from './login-dialog';
+import TaskkaApiClient from '../taskka-api-client';
 
 const mapStateToProps = (state) => ({
-  userLoggedIn: state.user !== null,
+  userLoggedIn: TaskkaApiClient.getAccessToken() !== null,
 });
 
 const mapDispatchToProps = (dispatch) => ({
