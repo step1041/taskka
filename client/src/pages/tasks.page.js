@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
 
 import TaskkaApiClient from '../lib/taskka-api-client';
 import errorHandler from '../lib/error-handler';
@@ -8,6 +9,8 @@ import {setTasks} from '../actions/task.actions';
 
 import TaskList from '../components/tasks/task-list';
 import AddTask from '../components/tasks/add-task';
+
+import './tasks.page.scss';
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -26,29 +29,55 @@ class TasksPage extends Component {
     if (!this.props.user) {
       return (<div>Loading...</div>);
     }
+
     return (
       <div>
-        <p>
-          Hello {this.props.user.username}! Here are a list of your tasks...
-        </p>
-
         <h1>New</h1>
-        <AddTask state={'new'} />
-        <TaskList state={'new'}/>
+        <div className={'task-list'}>
+          <AddTask state={'new'} />
+          <TaskList state={'new'}/>
+        </div>
 
         <h1>Complete</h1>
-        <AddTask state={'complete'} />
-        <TaskList state={'complete'} />
+        <div className={'task-list'}>
+          <AddTask state={'complete'} />
+        </div>
+        {
+          Object
+            .entries(this.groupTasksByUpdate(this.completeTasks()))
+            .map(([day, tasks]) => (
+              <div key={day}>
+                <h2>{day}</h2>
+                <div className={'task-list'}>
+                  <TaskList tasks={tasks}/>
+                </div>
+              </div>
+            ))
+        }
       </div>
     );
   }
 
-  newTasks() {
-    return this.props.tasks.filter((task) => task.state === 'new');
+  completeTasks() {
+    return this.props.tasks.filter((task) => task.state === "complete");
   }
 
-  completeTasks() {
-    return this.props.tasks.filter((task) => task.state === 'complete');
+  groupTasksByUpdate(tasks) {
+    let groups = {};
+
+    tasks
+      .map((task) => ({ updatedAt: moment(task.updated_at), task }))
+      .sort((left, right) => moment.utc(left.updatedAt).diff(moment.utc(right.updatedAt)))
+      .reverse()
+      .forEach(({updatedAt, task}) => {
+        let dateString = moment(task.updated_at).format('MMMM Do YYYY');
+        if (!groups[dateString]) {
+          groups[dateString] = [];
+        }
+        groups[dateString].push(task);
+      });
+
+    return groups;
   }
 }
 
