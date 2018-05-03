@@ -18,6 +18,7 @@ class Task extends Component {
 
     this.initState = {
       errors: {},
+      confirmingDelete: false,
       submitting: false,
       task: {},
     };
@@ -66,7 +67,7 @@ class Task extends Component {
             className={'task-delete-btn'}
             disabled={this.state.submitting}
           >
-            Delete
+            { this.state.confirmingDelete ? "Confirm?" : "Delete" }
           </button>
         </div>
 
@@ -111,14 +112,19 @@ class Task extends Component {
   onTaskDelete(e) {
     e.preventDefault();
 
-    this.setState({submitting: true});
-    this.props
-      .dispatch(deleteTask(this.props.task))
-      .then(() => {
-        if (this.__mounted) {
-          this.setState({submitting: false})
-        }
-      });
+    if (!this.state.confirmingDelete) {
+      this.setState({confirmingDelete: true});
+    }
+    else {
+      this.setState({submitting: true});
+      this.props
+        .dispatch(deleteTask(this.props.task))
+        .then(() => {
+          if (this.__mounted) {
+            this.setState({submitting: false});
+          }
+        });
+    }
   }
 
   onTaskStateChange(e) {
