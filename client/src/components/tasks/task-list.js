@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import AddTask from './add-task';
 import Task from './task';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -15,7 +14,6 @@ class TaskList extends Component {
         {this.props.tasks.map((task) => (
           <Task key={task.id} task={task} />
         ))}
-        <AddTask state={this.props.state} />
       </div>
     );
   }

@@ -7,6 +7,7 @@ import errorHandler from '../lib/error-handler';
 import {setTasks} from '../actions/task.actions';
 
 import TaskList from '../components/tasks/task-list';
+import AddTask from '../components/tasks/add-task';
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -32,9 +33,11 @@ class TasksPage extends Component {
         </p>
 
         <h1>New</h1>
+        <AddTask state={'new'} />
         <TaskList state={'new'}/>
 
         <h1>Complete</h1>
+        <AddTask state={'complete'} />
         <TaskList state={'complete'} />
       </div>
     );
