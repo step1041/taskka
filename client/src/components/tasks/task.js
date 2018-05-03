@@ -28,6 +28,7 @@ class Task extends Component {
     this.onTaskDelete = this.onTaskDelete.bind(this);
     this.onTaskStateChange = this.onTaskStateChange.bind(this);
     this.onTaskNameChange = this.onTaskNameChange.bind(this);
+    this.onTaskNotesChange = this.onTaskNotesChange.bind(this);
   }
 
   componentDidMount() {
@@ -73,16 +74,18 @@ class Task extends Component {
 
         {
           this.state.errors && this.state.errors.name
-          ?
-          <div className={'task-error-bar'}>
-            <small>{this.state.errors.name}</small>
-          </div>
-          :
-          null
+            ?
+            <div className={'task-error-bar'}>
+              <small>{this.state.errors.name}</small>
+            </div>
+            :
+            null
         }
 
         <div className={'task-notes-bar'}>
-          <textarea className={'task-notes'}>{this.state.task.notes}</textarea>
+          <textarea className={'task-notes'} onChange={this.onTaskNotesChange}>
+            {this.state.task.notes}
+          </textarea>
         </div>
       </div>
     );
@@ -102,7 +105,23 @@ class Task extends Component {
 
     let errors = TaskModel.validate(task);
 
-    this.setState({ errors, task });
+    this.setState({errors, task});
+
+    if (!Object.values(errors).some((error) => error)) {
+      this.updateTaskDebounced();
+    }
+  }
+
+  onTaskNotesChange(e) {
+    let newNotes = e.target.value;
+    let task = {
+      ...this.state.task,
+      notes: newNotes,
+    };
+
+    let errors = TaskModel.validate(task);
+
+    this.setState({errors, task});
 
     if (!Object.values(errors).some((error) => error)) {
       this.updateTaskDebounced();
@@ -146,7 +165,7 @@ class Task extends Component {
       }))
       .then(() => {
         if (this.__mounted) {
-          this.setState({submitting: false})
+          this.setState({submitting: false});
         }
       });
   }
