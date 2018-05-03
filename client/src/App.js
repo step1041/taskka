@@ -4,7 +4,7 @@ import {ConnectedRouter} from 'react-router-redux';
 
 import AppLayout from './layouts/app.layout';
 
-import './App.css';
+import './App.scss';
 
 import store, {history} from './lib/store';
 
