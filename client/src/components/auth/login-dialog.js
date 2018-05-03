@@ -3,10 +3,6 @@ import React, {Component} from 'react';
 const GOOGLE_ENDPOINT = 'https://accounts.google.com/o/oauth2/v2/auth';
 
 class LoginDialog extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <div>
