@@ -15,7 +15,16 @@ class TasksController < ApplicationController
   end
 
   def update
+    begin
+      task = current_user.tasks.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return render json: { error: "Task not found" }, status: 404
+    end
 
+    task.update(task_params)
+    task.save
+
+    render json: { task: task }
   end
 
   private

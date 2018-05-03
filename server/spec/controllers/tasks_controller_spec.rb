@@ -116,11 +116,41 @@ describe TasksController do
 
       before { authorize_user(user) }
 
-      it "returns http success" do
-        patch :update, params: { :id => 1 }
-        expect(response).to have_http_status(204)
+      context "when the task does not exist" do
+        it "renders a 404 response" do
+          patch :update, params: { :id => 1 }
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context "when the task belongs to another user" do
+        let (:other_user) { User.create() }
+        let (:task) { other_user.tasks.create(name: 'other task') }
+
+        it "renders a 404 response" do
+          patch :update, params: { :id => task.id }
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context "when the task belongs to the current user" do
+        let (:task) { user.tasks.create(name: 'Example Task') }
+
+        it "updates the task" do
+          patch :update, params: { :id => task.id, task: { name: 'New name'}}
+
+          task.reload
+          expect(task.name).to eq("New name")
+        end
+
+        it "renders the updated task" do
+          patch :update, params: { :id => task.id, task: { name: 'New name'}}
+
+          task.reload
+          body = JSON.parse(response.body)
+          expect(body["task"]).to eq(JSON.parse(task.to_json))
+        end
       end
     end
   end
-
 end
