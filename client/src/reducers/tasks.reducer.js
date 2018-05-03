@@ -3,15 +3,19 @@ import {List} from 'immutable';
 const initState = List();
 
 const tasksReducer = (state = initState, action) => {
+  let index;
+
   switch (action.type) {
-    case 'TASKS.ADD':
-      return state.push(action.data.task);
     case 'TASKS.SET':
       return List(action.data.tasks);
+    case 'TASKS.ADD':
+      return state.push(action.data.task);
     case 'TASKS.UPDATE':
-      let newTask = action.data.task;
-      let index = state.findIndex((task) => task.id === newTask.id);
-      return state.set(index, newTask);
+      index = state.findIndex((task) => task.id === action.data.task.id);
+      return state.set(index, action.data.task);
+    case 'TASKS.DELETE':
+      index = state.findIndex((task) => task.id === action.data.task.id);
+      return state.remove(index);
     default:
       return state;
   }
