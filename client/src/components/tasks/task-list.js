@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import AddTask from './add-task';
 import Task from './task';
 
-const mapStateToProps = (state) => ({
-  tasks: state.tasks
+const mapStateToProps = (state, ownProps) => ({
+  tasks: state.tasks.filter((task) => task.state === ownProps.state),
 });
 
 class TaskList extends Component {
@@ -14,15 +14,15 @@ class TaskList extends Component {
       <div>
         <ul>
           {this.props.tasks.map((task) => (
-            <Task key={task.id} task={task}/>
+            <Task key={task.id} task={task} />
           ))}
-          <li><AddTask /></li>
+          <li><AddTask state={this.props.state} /></li>
         </ul>
       </div>
-    )
+    );
   }
 }
 
 export default connect(
   mapStateToProps,
-)(TaskList)
+)(TaskList);
