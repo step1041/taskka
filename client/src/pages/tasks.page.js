@@ -18,19 +18,34 @@ class TasksPage extends Component {
     TaskkaApiClient
       .get('/tasks')
       .then(({tasks}) => this.props.dispatch(setTasks(tasks)))
-      .catch(errorHandler)
+      .catch(errorHandler);
   }
 
   render() {
     if (!this.props.user) {
-      return (<div>Loading...</div>)
+      return (<div>Loading...</div>);
     }
     return (
       <div>
-        Hello {this.props.user.username}! Here are a list of your tasks...
-        <TaskList />
+        <p>
+          Hello {this.props.user.username}! Here are a list of your tasks...
+        </p>
+
+        <h1>New</h1>
+        <TaskList state={'new'}/>
+
+        <h1>Complete</h1>
+        <TaskList state={'complete'} />
       </div>
-    )
+    );
+  }
+
+  newTasks() {
+    return this.props.tasks.filter((task) => task.state === 'new');
+  }
+
+  completeTasks() {
+    return this.props.tasks.filter((task) => task.state === 'complete');
   }
 }
 
