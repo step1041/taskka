@@ -40,6 +40,18 @@ describe TasksController do
           expect(body["tasks"]).to eq(JSON.parse(user.tasks.all.to_json))
         end
       end
+
+      it "does not render other user's tasks" do
+        other_user = User.create
+        other_user.tasks.create(name: "Other User's Task 1")
+        other_user.tasks.create(name: "Other User's Task 2")
+        other_user.tasks.create(name: "Other User's Task 3")
+
+        get :index
+
+        body = JSON.parse(response.body)
+        expect(body["tasks"]).to eq([])
+      end
     end
   end
 
@@ -60,6 +72,16 @@ describe TasksController do
             name: "Example Task"
           } }
         }.to change { Task.count }.by(1)
+      end
+
+      it "adds the task to the current user" do
+        post :create, params: { task: {
+          name: "Example Task"
+        } }
+
+        task = Task.last
+
+        expect(user.tasks).to include(task)
       end
 
       it "sets the correct name on the new task" do
