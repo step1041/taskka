@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import TaskModel from '../../models/task';
+
 import {addTask} from '../../actions/task.actions';
 
 const mapStateToProps = (state) => ({});
@@ -25,31 +27,45 @@ class AddTask extends Component {
     };
   }
 
-
   render() {
     return (
       <form onSubmit={this.onFormSubmit}>
         <input type={'text'} value={this.state.task.name} onChange={this.onNameChange}
                disabled={this.state.submitting} />
+        {this.state.errors && this.state.errors.name
+          ? <small>{this.state.errors.name}</small>
+          : null
+        }
       </form>
     );
   }
 
   onFormSubmit(e) {
     e.preventDefault();
+
+    let errors = TaskModel.validate(this.state.task);
+
+    if (Object.values(errors).some((msg) => msg)) {
+      this.setState({ errors });
+      return;
+    }
+
     this.setState({submitting: true});
     this.props.dispatch(addTask(this.state.task))
-      .then(() => {
-        this.setState(this.getInitialState());
-      });
+      .then(() => this.setState(this.getInitialState()));
   }
 
   onNameChange(e) {
+    let task = {
+      ...this.state.task,
+      name: e.target.value,
+    };
+
+    let errors = TaskModel.validate(task);
+
     this.setState({
-      task: {
-        ...this.state.task,
-        name: e.target.value,
-      },
+      errors,
+      task,
     });
   }
 }

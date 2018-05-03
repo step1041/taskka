@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import TaskModel from '../../models/task';
+
 import {deleteTask, updateTask} from '../../actions/task.actions';
 import debounce from 'debounce';
 
@@ -67,32 +69,16 @@ class Task extends Component {
 
   onTaskNameChange(e) {
     let newName = e.target.value;
+    let task = {
+      ...this.state.task,
+      name: newName,
+    };
 
-    if (!newName) {
-      this.setState({
-        errors: {
-          ...this.state.errors,
-          name: 'Name is required',
-        },
-      });
-    }
-    else {
-      this.setState({
-        errors: {
-          ...this.state.errors,
-          name: null,
-        },
-      });
-    }
+    let errors = TaskModel.validate(task);
 
-    this.setState({
-      task: {
-        ...this.state.task,
-        name: newName,
-      },
-    });
+    this.setState({ errors, task });
 
-    if (newName) {
+    if (Object.values(errors).some((error) => error)) {
       this.updateTaskDebounced();
     }
   }
