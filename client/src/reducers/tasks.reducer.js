@@ -8,6 +8,10 @@ const tasksReducer = (state = initState, action) => {
       return state.push(action.data.task);
     case 'TASKS.SET':
       return List(action.data.tasks);
+    case 'TASKS.UPDATE':
+      let newTask = action.data.task;
+      let index = state.findIndex((task) => task.id === newTask.id);
+      return state.set(index, newTask);
     default:
       return state;
   }

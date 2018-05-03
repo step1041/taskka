@@ -17,3 +17,15 @@ export const addTask = (task) => ((dispatch) => {
     })
     .catch(errorHandler);
 });
+
+export const updateTask = (task) => ((dispatch) => {
+  return TaskkaApiClient
+    .patch(`/tasks/${task.id}`, { task })
+    .then(({task: newTask}) => {
+      dispatch({
+        type: 'TASKS.UPDATE',
+        data: { task: newTask }
+      })
+    })
+    .catch(errorHandler);
+});
