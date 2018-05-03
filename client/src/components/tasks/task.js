@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import debounce from 'debounce';
 
 import TaskModel from '../../models/task';
 
 import {deleteTask, updateTask} from '../../actions/task.actions';
-import debounce from 'debounce';
+
+import './task.scss';
 
 const mapStateToProps = (state) => ({
   tasks: state.tasks,
@@ -27,6 +29,14 @@ class Task extends Component {
     this.onTaskNameChange = this.onTaskNameChange.bind(this);
   }
 
+  componentDidMount() {
+    this.__mounted = true;
+  }
+
+  componentWillUnmount() {
+    this.__mounted = false;
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
       task: nextProps.task,
@@ -35,37 +45,52 @@ class Task extends Component {
 
   render() {
     return (
-      <li key={this.state.task.id}>
-        <input
-          type={'checkbox'}
-          checked={this.state.task.state === 'complete'}
-          onChange={this.onTaskStateChange}
-          disabled={this.state.submitting}
-        />
-        <input
-          type={'text'}
-          value={this.state.task.name}
-          onChange={this.onTaskNameChange}
-          disabled={this.state.submitting}
-        />
-        <button
-          onClick={this.onTaskDelete}
-          disabled={this.state.submitting}
-        >
-          Delete
-        </button>
-        {this.state.errors && this.state.errors.name
-          ? <small>{this.state.errors.name}</small>
-          : null
+      <div key={this.state.task.id} className={'task-item'}>
+        <div className={'task-input-bar'}>
+          <input
+            type={'checkbox'}
+            className={'task-state'}
+            checked={this.state.task.state === 'complete'}
+            onChange={this.onTaskStateChange}
+            disabled={this.state.submitting}
+          />
+          <input
+            type={'text'}
+            className={'task-name'}
+            value={this.state.task.name}
+            onChange={this.onTaskNameChange}
+            disabled={this.state.submitting}
+          />
+          <button
+            onClick={this.onTaskDelete}
+            className={'task-delete-btn'}
+            disabled={this.state.submitting}
+          >
+            Delete
+          </button>
+        </div>
+
+        {
+          this.state.errors && this.state.errors.name
+          ?
+          <div className={'task-error-bar'}>
+            <small>{this.state.errors.name}</small>
+          </div>
+          :
+          null
         }
-      </li>
+
+        <div className={'task-notes-bar'}>
+          <textarea className={'task-notes'}>{this.state.task.notes}</textarea>
+        </div>
+      </div>
     );
   }
 
   updateTaskDebounced = debounce(() => {
     this.props
       .dispatch(updateTask(this.state.task));
-  }, 1000);
+  }, 500);
 
   onTaskNameChange(e) {
     let newName = e.target.value;
@@ -78,7 +103,7 @@ class Task extends Component {
 
     this.setState({ errors, task });
 
-    if (Object.values(errors).some((error) => error)) {
+    if (!Object.values(errors).some((error) => error)) {
       this.updateTaskDebounced();
     }
   }
@@ -89,7 +114,11 @@ class Task extends Component {
     this.setState({submitting: true});
     this.props
       .dispatch(deleteTask(this.props.task))
-      .then(() => this.setState({submitting: false}));
+      .then(() => {
+        if (this.__mounted) {
+          this.setState({submitting: false})
+        }
+      });
   }
 
   onTaskStateChange(e) {
@@ -109,7 +138,11 @@ class Task extends Component {
         id: taskId,
         state: newState,
       }))
-      .then(() => this.setState({submitting: false}));
+      .then(() => {
+        if (this.__mounted) {
+          this.setState({submitting: false})
+        }
+      });
   }
 }
 

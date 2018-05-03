@@ -12,12 +12,10 @@ class TaskList extends Component {
   render() {
     return (
       <div>
-        <ul>
-          {this.props.tasks.map((task) => (
-            <Task key={task.id} task={task} />
-          ))}
-          <li><AddTask state={this.props.state} /></li>
-        </ul>
+        {this.props.tasks.map((task) => (
+          <Task key={task.id} task={task} />
+        ))}
+        <AddTask state={this.props.state} />
       </div>
     );
   }

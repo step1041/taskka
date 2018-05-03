@@ -5,6 +5,8 @@ import TaskModel from '../../models/task';
 
 import {addTask} from '../../actions/task.actions';
 
+import './add-task.scss';
+
 const mapStateToProps = (state) => ({});
 
 class AddTask extends Component {
@@ -29,14 +31,22 @@ class AddTask extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onFormSubmit}>
-        <input type={'text'} value={this.state.task.name} onChange={this.onNameChange}
-               disabled={this.state.submitting} />
-        {this.state.errors && this.state.errors.name
-          ? <small>{this.state.errors.name}</small>
-          : null
-        }
-      </form>
+      <div className={'add-task'}>
+        <form onSubmit={this.onFormSubmit}>
+          <input
+            type={'text'}
+            className={'task-name'}
+            placeholder={'Add task...'}
+            value={this.state.task.name}
+            onChange={this.onNameChange}
+            disabled={this.state.submitting}
+          />
+          {this.state.errors && this.state.errors.name
+            ? <small>{this.state.errors.name}</small>
+            : null
+          }
+        </form>
+      </div>
     );
   }
 
