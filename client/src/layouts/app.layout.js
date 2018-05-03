@@ -36,7 +36,6 @@ class AppLayout extends Component {
   render () {
     return (
       <div>
-        AppLayout
         <UserInfo/>
         <ConnectedSwitch>
           <Route path={'/login'} component={LoginPage} />
