@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {updateTask} from '../../actions/task.actions';
+import {deleteTask, updateTask} from '../../actions/task.actions';
 
 const mapStateToProps = (state) => ({
   tasks: state.tasks,
@@ -19,6 +19,7 @@ class Task extends Component {
     this.state = this.initState;
 
     this.onTaskStateChange = this.onTaskStateChange.bind(this);
+    this.onTaskDelete = this.onTaskDelete.bind(this);
   }
 
   render() {
@@ -35,10 +36,23 @@ class Task extends Component {
     return (
       <li key={task.id}>
         <label>
-          <input type={'checkbox'} checked={checked} onChange={this.onTaskStateChange} disabled={this.state.submitting} />{task.name}
+          <input type={'checkbox'} checked={checked} onChange={this.onTaskStateChange}
+                 disabled={this.state.submitting} />{task.name}
         </label>
+        <button onClick={this.onTaskDelete} disabled={this.state.submitting}>Delete</button>
       </li>
     );
+  }
+
+  onTaskDelete(e) {
+    e.preventDefault();
+
+    this.setState({ submitting: true });
+    this.props
+      .dispatch(deleteTask(this.props.task))
+      .then(() => this.setState({
+        submitting: false,
+      }));
   }
 
   onTaskStateChange(e) {
@@ -48,17 +62,17 @@ class Task extends Component {
 
     this.setState({
       submitting: true,
-      checked: newState === 'complete'
+      checked: newState === 'complete',
     });
 
     this.props
       .dispatch(updateTask({
         id: taskId,
-        state: newState
+        state: newState,
       }))
       .then(() => this.setState({
         submitting: false,
-        checked: null
+        checked: null,
       }));
   }
 }
