@@ -29,3 +29,15 @@ export const updateTask = (task) => ((dispatch) => {
     })
     .catch(errorHandler);
 });
+
+export const deleteTask = (task) => ((dispatch) => {
+  return TaskkaApiClient
+    .delete(`/tasks/${task.id}`)
+    .then(({task: deletedTask}) => {
+      dispatch({
+        type: 'TASKS.DELETE',
+        data: {task: deletedTask},
+      });
+    })
+    .catch(errorHandler);
+});
