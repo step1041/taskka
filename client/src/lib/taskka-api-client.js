@@ -2,33 +2,33 @@ import Request from 'request-promise';
 
 import config from '../config';
 
-const ACCESS_TOKEN_KEY = "taskka.access_token";
+const ACCESS_TOKEN_KEY = 'taskka.access_token';
 
 class TaskkaApiClient {
   static get(path) {
     return this.request({
-      method: "GET",
+      method: 'GET',
       uri: config.serverUrl + path,
       json: true,
-    })
+    });
   }
 
   static post(path, body) {
     return this.request({
-      method: "POST",
+      method: 'POST',
       uri: config.serverUrl + path,
       body,
       json: true,
-    })
+    });
   }
 
   static patch(path, body) {
     return this.request({
-      method: "PATCH",
+      method: 'PATCH',
       uri: config.serverUrl + path,
       body,
       json: true,
-    })
+    });
   }
 
   static delete(path) {
@@ -45,7 +45,7 @@ class TaskkaApiClient {
     }
 
     Object.assign(options.headers, {
-      "Authorization": "Bearer " + this.getAccessToken(),
+      'Authorization': 'Bearer ' + this.getAccessToken(),
     });
 
     return Request(options)
@@ -53,8 +53,8 @@ class TaskkaApiClient {
         if (error.statusCode === 401) {
           this.removeAccessToken();
 
-          let newError = new Error("Not Authorized");
-          newError.name = "TaskkaApiError";
+          let newError = new Error('Not Authorized');
+          newError.name = 'TaskkaApiError';
           throw newError;
         }
 
@@ -71,7 +71,7 @@ class TaskkaApiClient {
   }
 
   static removeAccessToken() {
-    localStorage.removeItem(ACCESS_TOKEN_KEY)
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
   }
 }
 
