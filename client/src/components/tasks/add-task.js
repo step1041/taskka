@@ -6,21 +6,25 @@ import {addTask} from '../../actions/task.actions';
 const mapStateToProps = (state) => ({});
 
 class AddTask extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.initState = {
-      submitting: false,
-      task: {
-        name: '',
-      },
-    };
-
-    this.state = this.initState;
+    this.state = this.getInitialState();
 
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
   }
+
+  getInitialState() {
+    return {
+      submitting: false,
+      task: {
+        state: this.props.state || 'new',
+        name: '',
+      },
+    };
+  }
+
 
   render() {
     return (
@@ -35,7 +39,9 @@ class AddTask extends Component {
     e.preventDefault();
     this.setState({submitting: true});
     this.props.dispatch(addTask(this.state.task))
-      .then(() => this.setState(this.initState));
+      .then(() => {
+        this.setState(this.getInitialState());
+      });
   }
 
   onNameChange(e) {
