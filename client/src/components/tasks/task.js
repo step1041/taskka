@@ -133,6 +133,11 @@ class Task extends Component {
 
     if (!this.state.confirmingDelete) {
       this.setState({confirmingDelete: true});
+      setTimeout(() => {
+        if (this.__mounted) {
+          this.setState({confirmingDelete: false});
+        }
+      }, 2000)
     }
     else {
       this.setState({submitting: true});
