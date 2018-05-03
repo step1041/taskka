@@ -22,7 +22,7 @@ const mapStateToProps = (state) => ({
 });
 
 class AppLayout extends Component {
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.user && this.props.accessToken) {
       TaskkaApiClient
         .get('/user')

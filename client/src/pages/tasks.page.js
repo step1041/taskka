@@ -14,7 +14,7 @@ const mapStateToProps = (state) => ({
 });
 
 class TasksPage extends Component {
-  componentWillMount() {
+  componentDidMount() {
     TaskkaApiClient
       .get('/tasks')
       .then(({tasks}) => this.props.dispatch(setTasks(tasks)))

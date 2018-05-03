@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
 });
 
 class LogoutPage extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(logout());
   }
 
