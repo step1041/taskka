@@ -10,10 +10,6 @@ class TasksController < ApplicationController
     render json: { task: current_user.tasks.last }, status: 201
   end
 
-  def view
-
-  end
-
   def update
     begin
       task = current_user.tasks.find(params[:id])
@@ -22,14 +18,26 @@ class TasksController < ApplicationController
     end
 
     task.update(task_params)
-    task.save
+    task.save!
+
+    render json: { task: task }
+  end
+
+  def destroy
+    begin
+      task = current_user.tasks.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return render json: { error: "Task not found" }, status: 404
+    end
+
+    task.destroy!
 
     render json: { task: task }
   end
 
   private
 
-    def task_params
-      params.require(:task).permit(:name, :state, :notes)
-    end
+  def task_params
+    params.require(:task).permit(:name, :state, :notes)
+  end
 end

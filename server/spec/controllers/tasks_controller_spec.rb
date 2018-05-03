@@ -109,25 +109,7 @@ describe TasksController do
     end
   end
 
-  describe "GET #view" do
-    it "calls authorize" do
-      expect(controller).to receive(:authorize).and_call_original
-      get :view, params: { :id => 1 }
-    end
-
-    context "when authorized" do
-      let(:user) { User.create() }
-
-      before { authorize_user(user) }
-
-      it "returns http success" do
-        get :view, params: { :id => 1 }
-        expect(response).to have_http_status(204)
-      end
-    end
-  end
-
-  describe "GET #update" do
+  describe "PATCH #update" do
     it "calls authorize" do
       expect(controller).to receive(:authorize).and_call_original
       patch :update, params: { :id => 1 }
@@ -171,6 +153,51 @@ describe TasksController do
           task.reload
           body = JSON.parse(response.body)
           expect(body["task"]).to eq(JSON.parse(task.to_json))
+        end
+      end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    it "calls authorize" do
+      expect(controller).to receive(:authorize).and_call_original
+      delete :destroy, params: { :id => 1 }
+    end
+
+    context "when authorized" do
+      let(:user) { User.create() }
+
+      before { authorize_user(user) }
+
+      context 'when the task exists' do
+        let! (:task) { user.tasks.create(:name => "Example task") }
+
+        it 'deletes the task' do
+          expect{ delete :destroy, params: { id: task.id } }.to change{Task.count}.by(-1)
+        end
+
+        it 'renders the deleted task' do
+          delete :destroy, params: { id: task.id }
+
+          body = JSON.parse(response.body)
+          expect(body["task"]).to eq(JSON.parse(task.to_json))
+        end
+      end
+
+      context 'when the task does not exist' do
+        it "renders a 404 response" do
+          delete :destroy, params: { :id => 1 }
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context 'when the task belongs to another user' do
+        let! (:other_user) { User.create }
+        let! (:task) { other_user.tasks.create(name: 'Other task') }
+
+        it "renders a 404 response" do
+          delete :destroy, params: { :id => task.id }
+          expect(response).to have_http_status(404)
         end
       end
     end
