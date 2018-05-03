@@ -3,9 +3,15 @@ import {connect} from 'react-redux';
 
 import Task from './task';
 
-const mapStateToProps = (state, ownProps) => ({
-  tasks: state.tasks.filter((task) => task.state === ownProps.state),
-});
+const mapStateToProps = (state, ownProps) => {
+  if (ownProps.tasks) {
+    return {};
+  }
+
+  return {
+    tasks: state.tasks.filter((task) => task.state === ownProps.state)
+  }
+};
 
 class TaskList extends Component {
   render() {
