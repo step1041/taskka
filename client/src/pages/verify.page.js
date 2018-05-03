@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
+import {Link} from 'react-router-dom';
 
 import {login} from '../actions/user.actions';
 
@@ -13,7 +14,12 @@ class VerifyPage extends Component {
   constructor() {
     super();
 
-    this.state = {};
+    this.initState = {
+      error: null,
+      fetching: false,
+    };
+
+    this.state = this.initState;
   }
 
   componentDidMount() {
@@ -26,8 +32,16 @@ class VerifyPage extends Component {
         {
           !this.state.error
           ? <div>Summoning the bards</div>
-          : <div>{this.state.error}</div>
+          : <div>{this.errorMessage()}</div>
         }
+      </div>
+    )
+  }
+
+  errorMessage() {
+    return (
+      <div>
+        Hmmmm, something went wrong. <Link to={'/login'}>Try again?</Link>
       </div>
     )
   }
@@ -46,6 +60,7 @@ class VerifyPage extends Component {
         throw error;
     }
 
+    this.setState({ fetching: true });
     TaskkaApiClient
       .post(`/auth/${provider}/verify`, {
         code,
@@ -54,6 +69,12 @@ class VerifyPage extends Component {
       .then((body) => {
         this.props.dispatch(login(body.user));
         this.props.dispatch(push(body.new_user ? '/user/new' : '/tasks'));
+      })
+      .catch((error) => {
+        this.setState({
+          fetching: false,
+          error: error.message,
+        })
       });
   }
 
