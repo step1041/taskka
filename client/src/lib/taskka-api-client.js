@@ -31,6 +31,14 @@ class TaskkaApiClient {
     })
   }
 
+  static delete(path) {
+    return this.request({
+      method: 'DELETE',
+      uri: config.serverUrl + path,
+      json: true,
+    });
+  }
+
   static request(options) {
     if (!options.headers) {
       options.headers = {};
