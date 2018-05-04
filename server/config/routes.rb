@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: 'home#index'
+
   post 'auth/:provider/verify', to: 'auth#verify'
 
   get    'user',      to: 'user#view'
