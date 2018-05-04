@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import config from 'taskka-config';
+
 const GOOGLE_ENDPOINT = 'https://accounts.google.com/o/oauth2/v2/auth';
 
 class LoginDialog extends Component {
@@ -14,9 +16,9 @@ class LoginDialog extends Component {
   getGoogleAuthUrl() {
     let url_data = {
       scope: 'https://www.googleapis.com/auth/plus.me',
-      redirect_uri: 'http://localhost:2990/auth/google/callback',
+      redirect_uri: `${config.clientUrl}/auth/google/callback`,
       response_type: 'code',
-      client_id: '615040531772-s8b0kpejme4jn9peopffji2757pm238e.apps.googleusercontent.com',
+      client_id: config.google.clientId,
     };
 
     let query =

@@ -6,3 +6,7 @@ client/\.idea/
 server/config/secrets\.yml
 
 client/src/config\.js
+
+client/src/config\.dev\.js
+
+client/src/config\.prod\.js

@@ -1,6 +1,6 @@
 import Request from 'request-promise';
 
-import config from '../config';
+import config from 'taskka-config';
 
 const ACCESS_TOKEN_KEY = 'taskka.access_token';
 
