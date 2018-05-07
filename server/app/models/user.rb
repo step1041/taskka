@@ -1,12 +1,17 @@
 require 'securerandom'
 
 class User < ApplicationRecord
-  has_many :tasks
+  has_many :projects, foreign_key: 'owner_id'
 
   before_create :generate_new_access_token, if: -> { !self.access_token }
+  after_create :create_default_project
 
   def generate_new_access_token
     self.access_token = SecureRandom.uuid
+  end
+
+  def create_default_project
+    self.projects.create(name: 'default')
   end
 
   def new_user?
@@ -20,5 +25,9 @@ class User < ApplicationRecord
       else
         return false
     end
+  end
+
+  def tasks
+    return self.projects.first.tasks
   end
 end

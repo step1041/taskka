@@ -6,6 +6,6 @@ describe Task do
   end
 
   describe 'relations' do
-    it { is_expected.to respond_to(:user) }
+    it { is_expected.to respond_to(:project) }
   end
 end

@@ -16,8 +16,6 @@ describe TasksController do
       end
 
       context "when the user has no tasks" do
-        before { user.tasks = [] }
-
         it "returns an empty array" do
           get :index
 
