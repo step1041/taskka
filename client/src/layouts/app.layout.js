@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Route, Redirect} from 'react-router'
+import {Route, Redirect} from 'react-router';
 
 import {setUser} from '../actions/user.actions';
 
@@ -25,18 +25,16 @@ class AppLayout extends Component {
   componentDidMount() {
     if (!this.props.user && this.props.accessToken) {
       TaskkaApiClient
-        .get('/user')
-        .then((response) => {
-          this.props.dispatch(setUser(response.user));
-        })
-        .catch(errorHandler)
+        .getCurrentUser()
+        .then((user) => this.props.dispatch(setUser(user)))
+        .catch(errorHandler);
     }
   }
 
-  render () {
+  render() {
     return (
       <div>
-        <UserInfo/>
+        <UserInfo />
         <ConnectedSwitch>
           <Route path={'/login'} component={LoginPage} />
           <Route path={'/logout'} component={LogoutPage} />
@@ -44,7 +42,7 @@ class AppLayout extends Component {
           <Route path={'/user/new'} component={NewUserPage} />
           <Route path={'/tasks'} component={TasksPage} />
           <Route>
-            { this.props.accessToken ? <Redirect to={'/tasks'} /> : <Redirect to={'/login'} /> }
+            {this.props.accessToken ? <Redirect to={'/tasks'} /> : <Redirect to={'/login'} />}
           </Route>
         </ConnectedSwitch>
       </div>

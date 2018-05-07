@@ -7,7 +7,7 @@ import {login} from '../actions/user.actions';
 
 import TaskkaApiClient from '../lib/taskka-api-client';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 });
 
 class VerifyPage extends Component {
@@ -30,7 +30,7 @@ class VerifyPage extends Component {
     return (
       <div>
         {
-          !this.state.error
+          !this.state.error && false
           ? <div>Summoning the bards</div>
           : <div>{this.errorMessage()}</div>
         }
@@ -61,14 +61,14 @@ class VerifyPage extends Component {
     }
 
     this.setState({ fetching: true });
+
+    let redirectUri = window.location.origin + window.location.pathname;
+
     TaskkaApiClient
-      .post(`/auth/${provider}/verify`, {
-        code,
-        redirect_uri: window.location.origin + window.location.pathname,
-      })
-      .then((body) => {
-        this.props.dispatch(login(body.user));
-        this.props.dispatch(push(body.new_user ? '/user/new' : '/tasks'));
+      .verifyOAuthCode(provider, code, redirectUri)
+      .then((response) => {
+        this.props.dispatch(login(response.user));
+        this.props.dispatch(push(response.new_user ? '/user/new' : '/tasks'));
       })
       .catch((error) => {
         this.setState({

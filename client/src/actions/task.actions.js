@@ -8,11 +8,11 @@ export const setTasks = (tasks) => ({
 
 export const addTask = (task) => ((dispatch) => {
   return TaskkaApiClient
-    .post('/tasks', {task})
-    .then(({task: newTask}) => {
+    .addTask(task)
+    .then((task) => {
       dispatch({
         type: 'TASKS.ADD',
-        data: {task: newTask},
+        data: {task},
       });
     })
     .catch(errorHandler);
@@ -20,11 +20,11 @@ export const addTask = (task) => ((dispatch) => {
 
 export const updateTask = (task) => ((dispatch) => {
   return TaskkaApiClient
-    .patch(`/tasks/${task.id}`, {task})
-    .then(({task: newTask}) => {
+    .updateTask(task)
+    .then((task) => {
       dispatch({
         type: 'TASKS.UPDATE',
-        data: {task: newTask},
+        data: {task},
       });
     })
     .catch(errorHandler);
@@ -32,11 +32,11 @@ export const updateTask = (task) => ((dispatch) => {
 
 export const deleteTask = (task) => ((dispatch) => {
   return TaskkaApiClient
-    .delete(`/tasks/${task.id}`)
-    .then(({task: deletedTask}) => {
+    .deleteTask(task)
+    .then((task) => {
       dispatch({
         type: 'TASKS.DELETE',
-        data: {task: deletedTask},
+        data: {task},
       });
     })
     .catch(errorHandler);

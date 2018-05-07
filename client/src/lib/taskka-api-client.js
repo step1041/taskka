@@ -5,6 +5,48 @@ import config from 'taskka-config';
 const ACCESS_TOKEN_KEY = 'taskka.access_token';
 
 class TaskkaApiClient {
+  static verifyOAuthCode(provider, code, redirect_uri) {
+    return this.post(`/auth/${provider}/verify`, {
+      code,
+      redirect_uri
+    });
+  }
+
+  static getCurrentUser() {
+    return this.get('/user')
+      .then(({user}) => user);
+  }
+
+  static updateCurrentUser(user) {
+    return this.patch('/user', {user})
+      .then(({user}) => user);
+  }
+
+  static getTasks() {
+    return this.get('/tasks')
+      .then(({tasks}) => tasks);
+  }
+
+  static addTask(task) {
+    return this.post('/tasks', {task})
+      .then(({task}) => task);
+  }
+
+  static updateTask(task) {
+    return this.patch(`/tasks/${task.id}`, {task})
+      .then(({task}) => task);
+  }
+
+  static deleteTask(task) {
+    return this.delete(`/tasks/${task.id}`)
+      .then(({task}) => task);
+  }
+
+  /************************/
+  /* basic requests stuff */
+
+  /************************/
+
   static get(path) {
     return this.request({
       method: 'GET',
@@ -61,6 +103,11 @@ class TaskkaApiClient {
         throw error;
       });
   }
+
+  /**********************/
+  /* Access Token stuff */
+
+  /**********************/
 
   static getAccessToken() {
     return localStorage.getItem(ACCESS_TOKEN_KEY);
