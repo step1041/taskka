@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.login-dialog {
+  border: 1px solid grey;
+  padding: 24px;
+
+  text-align: center;
+
+  .btn {
+    padding: 16px;
+    margin: 8px;
+
+    width: 200px;
+  }
+
+  .google-btn {
+    background-color: #4885ed;
+    color: white;
+    text-decoration: none;
+
+    font-family: 'Roboto', sans-serif;
+
+    cursor: pointer;
+  }
+}
