@@ -30,7 +30,7 @@ class VerifyPage extends Component {
     return (
       <div>
         {
-          !this.state.error && false
+          !this.state.error
           ? <div>Summoning the bards</div>
           : <div>{this.errorMessage()}</div>
         }
@@ -68,9 +68,11 @@ class VerifyPage extends Component {
       .verifyOAuthCode(provider, code, redirectUri)
       .then((response) => {
         this.props.dispatch(login(response.user));
-        this.props.dispatch(push(response.new_user ? '/user/new' : '/tasks'));
+        this.props.dispatch(push(response.new_user ? '/user/new' : '/'));
       })
       .catch((error) => {
+        console.error(error);
+
         this.setState({
           fetching: false,
           error: error.message,
