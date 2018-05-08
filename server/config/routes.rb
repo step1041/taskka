@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get    'user',      to: 'user#view'
   patch  'user',      to: 'user#update'
 
+  get    'projects',  to: 'projects#index'
+
   get    'tasks',     to: 'tasks#index'
   post   'tasks',     to: 'tasks#create'
   patch  'tasks/:id', to: 'tasks#update'
