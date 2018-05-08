@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 const mapStateToProps = () => ({});
 
-class ProjectList extends Component{
+class ProjectsPanel extends Component{
   render () {
     return (
       <div>
@@ -15,4 +15,4 @@ class ProjectList extends Component{
 
 export default connect(
   mapStateToProps
-)(ProjectList);
+)(ProjectsPanel);
