@@ -14,6 +14,13 @@ const uiReducer = (state = initState, action) => {
         ...state,
         projectsPanelOpen: false,
       };
+
+    case "PROJECTS.SET_CURRENT":
+      return {
+        ...state,
+        currentProject: action.data.project.id
+      };
+
     default:
       return state;
   }

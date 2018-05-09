@@ -3,6 +3,7 @@ import userReducer from './user.reducer';
 import accessTokenReducer from './access-token.reducer';
 import tasksReducer from './tasks.reducer';
 import uiReducer from './ui.reducer';
+import projectsReducer from './projects.reducer';
 
 const reducers = {
   accessToken: accessTokenReducer,
@@ -10,6 +11,7 @@ const reducers = {
   ui: uiReducer,
   user: userReducer,
   tasks: tasksReducer,
+  projects: projectsReducer,
 };
 
 export default reducers;
