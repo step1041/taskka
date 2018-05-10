@@ -7,6 +7,11 @@ class User < ApplicationRecord
   after_create :create_default_project
 
   def serializable_hash(options)
+    if !options[:methods]
+      options[:methods] = [
+        :default_project_id,
+      ]
+    end
 
     if !options[:except]
       options[:except] = [
@@ -41,5 +46,13 @@ class User < ApplicationRecord
 
   def tasks
     return self.projects.first.tasks
+  end
+
+  def default_project
+    self.projects.find_by_name('default')
+  end
+
+  def default_project_id
+    self.default_project.id
   end
 end
