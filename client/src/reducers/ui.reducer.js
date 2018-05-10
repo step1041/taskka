@@ -1,5 +1,6 @@
 const initState = {
   projectsPanelOpen: false,
+  currentProjectId: null,
 };
 
 const uiReducer = (state = initState, action) => {
@@ -18,10 +19,24 @@ const uiReducer = (state = initState, action) => {
         projectsPanelOpen: false,
       };
 
+
+    case "USER.LOGIN":
+    case "USER.SET":
+      if (state.currentProjectId === null) {
+        return {
+          ...state,
+          currentProjectId: action.data.user.default_project_id
+        };
+      }
+      else {
+        return state;
+      }
+
     case "PROJECTS.SET_CURRENT":
       return {
         ...state,
-        currentProject: action.data.project.id
+        currentProjectId: action.data.project.id,
+        projectsPanelOpen: false,
       };
 
     default:
