@@ -6,6 +6,18 @@ class User < ApplicationRecord
   before_create :generate_new_access_token, if: -> { !self.access_token }
   after_create :create_default_project
 
+  def serializable_hash(options)
+
+    if !options[:except]
+      options[:except] = [
+        :google_token,
+        :google_id,
+      ]
+    end
+
+    super(options)
+  end
+
   def generate_new_access_token
     self.access_token = SecureRandom.uuid
   end
