@@ -6,6 +6,9 @@ const tasksReducer = (state = initState, action) => {
   let index;
 
   switch (action.type) {
+    case "USER.LOGOUT":
+      return initState;
+
     case 'TASKS.SET':
       return List(action.data.tasks);
     case 'TASKS.ADD':
@@ -16,6 +19,7 @@ const tasksReducer = (state = initState, action) => {
     case 'TASKS.DELETE':
       index = state.findIndex((task) => task.id === action.data.task.id);
       return state.remove(index);
+
     default:
       return state;
   }

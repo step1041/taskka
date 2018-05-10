@@ -4,6 +4,9 @@ const initState = {
 
 const uiReducer = (state = initState, action) => {
   switch (action.type) {
+    case "USER.LOGOUT":
+      return initState;
+
     case "UI.PROJECTS_PANEL.OPEN":
       return {
         ...state,

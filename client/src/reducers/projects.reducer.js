@@ -6,6 +6,9 @@ const projectsReducer = (state = initialState, action) => {
   let index;
 
   switch (action.type) {
+    case "USER.LOGOUT":
+      return initialState;
+
     case 'PROJECTS.SET':
       return List(action.data.projects);
     case 'PROJECTS.ADD':
@@ -16,6 +19,7 @@ const projectsReducer = (state = initialState, action) => {
     case 'PROJECTS.DELETE':
       index = state.findIndex((project) => project.id === action.data.project.id);
       return state.remove(index);
+
     default:
       return state;
   }
