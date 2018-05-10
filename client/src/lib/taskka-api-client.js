@@ -8,7 +8,7 @@ class TaskkaApiClient {
   static verifyOAuthCode(provider, code, redirect_uri) {
     return this.post(`/auth/${provider}/verify`, {
       code,
-      redirect_uri
+      redirect_uri,
     });
   }
 
@@ -20,6 +20,26 @@ class TaskkaApiClient {
   static updateCurrentUser(user) {
     return this.patch('/user', {user})
       .then(({user}) => user);
+  }
+
+  static getProjects() {
+    return this.get('/projects')
+      .then(({projects}) => projects);
+  }
+
+  static addProject(project) {
+    return this.post('/projects', {project})
+      .then(({project}) => project);
+  }
+
+  static updateProject(project) {
+    return this.patch(`projects/${project.id}`, {project})
+      .then(({project}) => project);
+  }
+
+  static deleteProject(project) {
+    return this.delete(`projects/${project.id}`)
+      .then(({project}) => project);
   }
 
   static getTasks() {
@@ -42,10 +62,7 @@ class TaskkaApiClient {
       .then(({task}) => task);
   }
 
-  /************************/
-  /* basic requests stuff */
-
-  /************************/
+  /* ==== basic requests stuff ==== */
 
   static get(path) {
     return this.request({
@@ -104,10 +121,7 @@ class TaskkaApiClient {
       });
   }
 
-  /**********************/
-  /* Access Token stuff */
-
-  /**********************/
+  /* ==== Access Token stuff ==== */
 
   static getAccessToken() {
     return localStorage.getItem(ACCESS_TOKEN_KEY);
