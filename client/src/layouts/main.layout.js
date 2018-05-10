@@ -11,8 +11,9 @@ import LogoutPage from '../pages/logout.page';
 import TasksPage from '../pages/tasks.page';
 import NewUserPage from '../pages/new-user.page';
 
-import "./main.layout.scss";
 import {closeProjectsPanel, toggleProjectsPanel} from '../actions/ui.actions';
+
+import "./main.layout.scss";
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -66,6 +67,11 @@ class MainLayout extends Component {
             <Route path={'/user/new'} component={NewUserPage} />
 
             <Route path={'/tasks'} component={TasksPage} />
+
+            <Route path={'/auth/:provider/callback'}>
+              {/* User is just logging in, and they are still on the old callback route */}
+              <div>Loading...</div>
+            </Route>
 
             <Route>
               <Redirect to={'/tasks'} />
