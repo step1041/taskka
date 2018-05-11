@@ -57,6 +57,7 @@ class MainLayout extends Component {
             : null
         }
         <div className={"header"} >
+          <div className={"app-name"}>Taskka</div>
           <ProjectsPanelToggle />
           <UserInfo />
         </div>

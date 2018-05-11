@@ -7,7 +7,8 @@
     position: absolute;
 
     width: 200px;
-    height: 100vh;
+    height: calc(100vh - 50px);
+    top: 50px;
 
     z-index: 100;
   }
@@ -16,18 +17,29 @@
     color: white;
     background: grey;
 
-    margin-left: 200px;
-    padding: 16px;
-
     height: 50px;
+
+    .app-name {
+      background-color: black;
+      display: inline-block;
+      padding: 16px;
+      margin-right: 16px;
+    }
 
     .projects-panel-toggle {
       display: none;
+      
+      padding: 16px;
+      margin: -16px;
+
+      cursor: default;
     }
 
     .user-info {
       display: inline-block;
       float: right;
+
+      padding: 16px;
     }
   }
 
@@ -47,6 +59,11 @@
     }
 
     &.menu-open {
+      .projects-panel-toggle {
+        background-color: black;
+        color: white;
+      }
+
       .projects {
         left: 0;
       }
@@ -66,10 +83,6 @@
 
       .projects-panel-toggle {
         display: inline-block;
-        padding: 16px;
-        margin: -16px;
-
-        cursor: default;
       }
     }
 

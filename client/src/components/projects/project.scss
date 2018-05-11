@@ -6,11 +6,13 @@
   width: 100%;
 
   &.current {
-    background-color: grey;
+    background-color: lightgray;
+    color: black;
   }
 
   &:hover {
     background-color: darkgray;
+    color: black;
   }
 
   input {
