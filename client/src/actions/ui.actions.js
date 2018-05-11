@@ -10,9 +10,3 @@ export const toggleProjectsPanel = () => ((dispatch, getState) => {
   let panelOpen = getState().ui.projectsPanelOpen;
   dispatch(panelOpen ? closeProjectsPanel() : openProjectsPanel());
 });
-
-
-export const setCurrentProject = (project) => ({
-  type: 'PROJECTS.SET_CURRENT',
-  data: {project},
-});

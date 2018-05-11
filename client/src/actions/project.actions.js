@@ -58,3 +58,8 @@ export const deleteProject = (project) => ((dispatch) => {
     })
     .catch(errorHandler);
 });
+
+export const setCurrentProject = (project) => ({
+  type: 'PROJECTS.SET_CURRENT',
+  data: {project},
+});

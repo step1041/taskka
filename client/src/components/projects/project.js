@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {setCurrentProject} from '../../actions/ui.actions';
+import {setCurrentProject} from '../../actions/project.actions';
 
 import './project.scss';
 
