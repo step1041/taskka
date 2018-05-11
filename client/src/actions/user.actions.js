@@ -1,13 +1,15 @@
+import ACTION_TYPES from './action-types';
+
 export const setUser = (user) => ({
-  type: 'USER.SET',
+  type: ACTION_TYPES.USER.SET,
   data: { user },
 });
 
 export const login = (user) => ({
-  type: 'USER.LOGIN',
+  type: ACTION_TYPES.USER.LOGIN,
   data: { user }
 });
 
 export const logout = () => ({
-  type: 'USER.LOGOUT',
+  type: ACTION_TYPES.USER.LOGOUT,
 });

@@ -1,3 +1,5 @@
+import ACTION_TYPES from '../actions/action-types';
+
 const initState = {
   projectsPanelOpen: false,
   currentProjectId: null,
@@ -5,23 +7,22 @@ const initState = {
 
 const uiReducer = (state = initState, action) => {
   switch (action.type) {
-    case "USER.LOGOUT":
+    case ACTION_TYPES.USER.LOGOUT:
       return initState;
 
-    case "UI.PROJECTS_PANEL.OPEN":
+    case ACTION_TYPES.UI.PROJECTS_PANEL.OPEN:
       return {
         ...state,
         projectsPanelOpen: true,
       };
-    case "UI.PROJECTS_PANEL.CLOSE":
+    case ACTION_TYPES.UI.PROJECTS_PANEL.CLOSE:
       return {
         ...state,
         projectsPanelOpen: false,
       };
 
-
-    case "USER.LOGIN":
-    case "USER.SET":
+    case ACTION_TYPES.USER.SET:
+    case ACTION_TYPES.USER.LOGIN:
       if (state.currentProjectId === null) {
         return {
           ...state,
@@ -32,7 +33,7 @@ const uiReducer = (state = initState, action) => {
         return state;
       }
 
-    case "PROJECTS.SET_CURRENT":
+    case ACTION_TYPES.PROJECTS.SET_CURRENT:
       return {
         ...state,
         currentProjectId: action.data.project.id,

@@ -1,22 +1,26 @@
 import {List} from 'immutable';
+import ACTION_TYPES from '../actions/action-types';
 
-const initialState = List();
+const initState = List();
 
-const projectsReducer = (state = initialState, action) => {
+const projectsReducer = (state = initState, action) => {
   let index;
 
   switch (action.type) {
-    case "USER.LOGOUT":
-      return initialState;
+    case ACTION_TYPES.USER.LOGOUT:
+      return initState;
 
-    case 'PROJECTS.SET':
+    case ACTION_TYPES.PROJECTS.SET:
       return List(action.data.projects);
-    case 'PROJECTS.ADD':
+
+    case ACTION_TYPES.PROJECTS.ADD:
       return state.push(action.data.project);
-    case 'PROJECTS.UPDATE':
+
+    case ACTION_TYPES.PROJECTS.UPDATE:
       index = state.findIndex((project) => project.id === action.data.project.id);
       return state.set(index, action.data.project);
-    case 'PROJECTS.DELETE':
+
+    case ACTION_TYPES.PROJECTS.DELETE:
       index = state.findIndex((project) => project.id === action.data.project.id);
       return state.remove(index);
 

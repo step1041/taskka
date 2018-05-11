@@ -1,8 +1,9 @@
 import TaskkaApiClient from '../lib/taskka-api-client';
 import errorHandler from '../lib/error-handler';
+import ACTION_TYPES from './action-types';
 
 export const setTasks = (tasks) => ({
-  type: 'TASKS.SET',
+  type: ACTION_TYPES.TASKS.SET,
   data: {tasks},
 });
 
@@ -11,7 +12,7 @@ export const addTask = (task) => ((dispatch) => {
     .addTask(task)
     .then((task) => {
       dispatch({
-        type: 'TASKS.ADD',
+        type: ACTION_TYPES.TASKS.ADD,
         data: {task},
       });
     })
@@ -23,7 +24,7 @@ export const updateTask = (task) => ((dispatch) => {
     .updateTask(task)
     .then((task) => {
       dispatch({
-        type: 'TASKS.UPDATE',
+        type: ACTION_TYPES.TASKS.UPDATE,
         data: {task},
       });
     })
@@ -35,7 +36,7 @@ export const deleteTask = (task) => ((dispatch) => {
     .deleteTask(task)
     .then((task) => {
       dispatch({
-        type: 'TASKS.DELETE',
+        type: ACTION_TYPES.TASKS.DELETE,
         data: {task},
       });
     })

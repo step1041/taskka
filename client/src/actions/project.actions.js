@@ -1,5 +1,6 @@
 import TaskkaApiClient from '../lib/taskka-api-client';
 import errorHandler from '../lib/error-handler';
+import ACTION_TYPES from './action-types';
 
 const activeRequests = {};
 
@@ -19,7 +20,7 @@ export const getProjects = () => ((dispatch) => {
 });
 
 export const setProjects = (projects) => ({
-  type: 'PROJECTS.SET',
+  type: ACTION_TYPES.PROJECTS.SET,
   data: {projects},
 });
 
@@ -28,7 +29,7 @@ export const addProject = (project) => ((dispatch) => {
     .addProject(project)
     .then((project) => {
       dispatch({
-        type: 'PROJECTS.ADD',
+        type: ACTION_TYPES.PROJECTS.ADD,
         data: {project},
       });
     })
@@ -40,7 +41,7 @@ export const updateProject = (project) => ((dispatch) => {
     .updateProject(project)
     .then((project) => {
       dispatch({
-        type: 'PROJECTS.UPDATE',
+        type: ACTION_TYPES.PROJECTS.UPDATE,
         data: {project},
       });
     })
@@ -52,7 +53,7 @@ export const deleteProject = (project) => ((dispatch) => {
     .deleteProject(project)
     .then((project) => {
       dispatch({
-        type: 'PROJECTS.DELETE',
+        type: ACTION_TYPES.PROJECTS.DELETE,
         data: {project},
       });
     })
@@ -60,6 +61,6 @@ export const deleteProject = (project) => ((dispatch) => {
 });
 
 export const setCurrentProject = (project) => ({
-  type: 'PROJECTS.SET_CURRENT',
+  type: ACTION_TYPES.PROJECTS.SET_CURRENT,
   data: {project},
 });

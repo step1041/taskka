@@ -1,9 +1,11 @@
+import ACTION_TYPES from './action-types';
+
 export const openProjectsPanel = () => ({
-  type: 'UI.PROJECTS_PANEL.OPEN',
+  type: ACTION_TYPES.UI.PROJECTS_PANEL.OPEN,
 });
 
 export const closeProjectsPanel = () => ({
-  type: 'UI.PROJECTS_PANEL.CLOSE',
+  type: ACTION_TYPES.UI.PROJECTS_PANEL.close,
 });
 
 export const toggleProjectsPanel = () => ((dispatch, getState) => {
