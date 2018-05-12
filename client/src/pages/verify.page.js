@@ -69,6 +69,7 @@ class VerifyPage extends Component {
       .then((response) => {
         this.props.dispatch(login(response.user));
         this.props.dispatch(push(response.new_user ? '/user/new' : '/'));
+        return null;
       })
       .catch((error) => {
         console.error(error);
