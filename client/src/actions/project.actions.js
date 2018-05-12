@@ -28,7 +28,7 @@ export const addProject = (project) => ((dispatch) => {
   return TaskkaApiClient
     .addProject(project)
     .then((project) => {
-      dispatch({
+      return dispatch({
         type: ACTION_TYPES.PROJECTS.ADD,
         data: {project},
       });
@@ -40,7 +40,7 @@ export const updateProject = (project) => ((dispatch) => {
   return TaskkaApiClient
     .updateProject(project)
     .then((project) => {
-      dispatch({
+      return dispatch({
         type: ACTION_TYPES.PROJECTS.UPDATE,
         data: {project},
       });
