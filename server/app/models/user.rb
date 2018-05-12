@@ -2,6 +2,7 @@ require 'securerandom'
 
 class User < ApplicationRecord
   has_many :projects, foreign_key: 'owner_id'
+  has_many :tasks, through: :projects
 
   before_create :generate_new_access_token, if: -> { !self.access_token }
   after_create :create_default_project
@@ -42,10 +43,6 @@ class User < ApplicationRecord
       else
         return false
     end
-  end
-
-  def tasks
-    return self.projects.first.tasks
   end
 
   def default_project
