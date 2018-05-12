@@ -13,8 +13,8 @@ import AddTask from '../components/tasks/add-task';
 import './tasks.page.scss';
 
 const mapStateToProps = (state) => ({
-  user: state.user,
   tasks: state.tasks,
+  currentProject: state.projects.find((p) => p.id === state.ui.currentProjectId),
 });
 
 class TasksPage extends Component {
@@ -26,7 +26,7 @@ class TasksPage extends Component {
   }
 
   render() {
-    if (!this.props.user) {
+    if (!this.props.currentProject) {
       return (<div>Loading...</div>);
     }
 
