@@ -4,11 +4,11 @@ import ACTION_TYPES from './action-types';
 
 const activeRequests = {};
 
-export const getProjects = () => ((dispatch) => {
+export const fetchProjects = () => ((dispatch) => {
   if (!activeRequests.getProjects) {
     activeRequests.getProjects =
       TaskkaApiClient
-        .getProjects()
+        .fetchProjects()
         .then((projects) => {
           delete activeRequests.getProjects;
           return dispatch(setProjects(projects));

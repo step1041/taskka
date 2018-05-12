@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {addProject, getProjects} from '../../actions/project.actions';
+import {addProject, fetchProjects} from '../../actions/project.actions';
 
 import Project from './project';
 
@@ -45,7 +45,7 @@ class ProjectsPanel extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getProjects());
+    this.props.dispatch(fetchProjects());
   }
 
   onNewProjectNameChange(e) {

@@ -22,7 +22,7 @@ class TaskkaApiClient {
       .then(({user}) => user);
   }
 
-  static getProjects() {
+  static fetchProjects() {
     return this.get('/projects')
       .then(({projects}) => projects);
   }
