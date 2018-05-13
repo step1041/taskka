@@ -5,7 +5,7 @@ import {Route, Redirect} from 'react-router';
 import ConnectedSwitch from '../lib/connected-switch';
 
 import UserInfo from '../components/user/user-info';
-import ProjectList from '../components/projects/projects-panel';
+import ProjectsPanel from '../components/projects/projects-panel';
 
 import LogoutPage from '../pages/logout.page';
 import TasksPage from '../pages/tasks.page';
@@ -13,10 +13,11 @@ import NewUserPage from '../pages/new-user.page';
 
 import {closeProjectsPanel, toggleProjectsPanel} from '../actions/ui.actions';
 
-import "./main.layout.scss";
+import './main.layout.scss';
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  userIsNew: !state.user.username,
   accessToken: state.accessToken,
   projectsPanelOpen: state.ui.projectsPanelOpen,
 });
@@ -30,10 +31,10 @@ class MainLayout extends Component {
   }
 
   render() {
-    let className = "main-layout";
+    let className = 'main-layout';
 
     if (this.props.projectsPanelOpen) {
-      className += " menu-open";
+      className += ' menu-open';
     }
 
     const ClickShroud = () => (
@@ -47,21 +48,23 @@ class MainLayout extends Component {
     );
 
     return (
-      <div className={className} >
-        <div className={"projects"}>
-          <ProjectList />
+      <div className={className}>
+        <div className={'projects'}>
+          {!this.props.userIsNew && (
+            <ProjectsPanel />
+          )}
         </div>
-        {
-          this.props.projectsPanelOpen
-            ? <ClickShroud />
-            : null
-        }
-        <div className={"header"} >
-          <div className={"app-name"}>Taskka</div>
-          <ProjectsPanelToggle />
+        {this.props.projectsPanelOpen && (
+          <ClickShroud />
+        )}
+        <div className={'header'}>
+          <div className={'app-name'}>Taskka</div>
+          {!this.props.userIsNew && (
+            <ProjectsPanelToggle />
+          )}
           <UserInfo />
         </div>
-        <div className={"page"}>
+        <div className={'page'}>
           <ConnectedSwitch>
             <Route path={'/logout'} component={LogoutPage} />
 
@@ -84,11 +87,11 @@ class MainLayout extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.onWindowResize)
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.onWindowResize)
+    window.removeEventListener('resize', this.onWindowResize);
   }
 
   toggleProjectsPanel() {
