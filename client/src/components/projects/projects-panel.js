@@ -35,9 +35,9 @@ class ProjectsPanel extends Component {
         {this.props.projects.map((project) => (
           <Project project={project} key={project.id}/>
         ))}
-        <div className={'project'}>
+        <div className={'add-project'}>
           <form onSubmit={this.onAddProjectSubmit}>
-            <input value={this.state.newProject.name} placeholder={"+ add project"} onChange={this.onNewProjectNameChange}/>
+            <input type={'text'} value={this.state.newProject.name} placeholder={"+ add project"} onChange={this.onNewProjectNameChange}/>
           </form>
         </div>
       </div>
@@ -61,6 +61,10 @@ class ProjectsPanel extends Component {
 
   onAddProjectSubmit(e) {
     e.preventDefault();
+
+    if (!this.state.newProject.name) {
+      return;
+    }
 
     this.props.dispatch(addProject(this.state.newProject))
       .then(() => this.setState(this.getInitialState()))

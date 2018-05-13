@@ -68,7 +68,7 @@ class Task extends Component {
             className={'task-delete-btn'}
             disabled={this.state.submitting}
           >
-            { this.state.confirmingDelete ? "Confirm?" : "Delete" }
+            {this.state.confirmingDelete ? 'Confirm?' : 'Delete'}
           </button>
         </div>
 
@@ -83,7 +83,7 @@ class Task extends Component {
         }
 
         <div className={'task-notes-bar'}>
-          <textarea className={'task-notes'} onChange={this.onTaskNotesChange}>
+          <textarea className={'task-notes'} onChange={this.onTaskNotesChange} placeholder={'Notes...'}>
             {this.state.task.notes}
           </textarea>
         </div>
@@ -137,7 +137,7 @@ class Task extends Component {
         if (this.__mounted) {
           this.setState({confirmingDelete: false});
         }
-      }, 2000)
+      }, 2000);
     }
     else {
       this.setState({submitting: true});
