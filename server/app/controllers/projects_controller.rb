@@ -30,9 +30,13 @@ class ProjectsController < ApplicationController
 
   def destroy
     begin
-      project = current_user.project.find(params[:project_id])
+      project = current_user.projects.find(params[:project_id])
     rescue ActiveRecord::RecordNotFound
       return render json: { error: "Project not found" }, status: 404
+    end
+
+    if project == current_user.default_project
+      return render json: { error: "Can't delete a user's default project" }, status: 400
     end
 
     project.destroy!
