@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
 
+import ProjectHeader from '../components/projects/project-header';
 import TaskList from '../components/tasks/task-list';
 import AddTask from '../components/tasks/add-task';
 
@@ -20,9 +21,7 @@ class TasksPage extends Component {
 
     return (
       <div>
-        <div>
-          <h1>{this.props.currentProject.name}</h1>
-        </div>
+        <ProjectHeader />
 
         <div>
           <h2>New</h2>
