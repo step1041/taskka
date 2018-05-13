@@ -38,12 +38,12 @@ class TaskkaApiClient {
   }
 
   static updateProject(project) {
-    return this.patch(`projects/${project.id}`, {project})
+    return this.patch(`/projects/${project.id}`, {project})
       .then(({project}) => project);
   }
 
   static deleteProject(project) {
-    return this.delete(`projects/${project.id}`)
+    return this.delete(`/projects/${project.id}`)
       .then(({project}) => project);
   }
 
