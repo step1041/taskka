@@ -48,7 +48,7 @@ export const updateProject = (project) => ((dispatch) => {
     .catch(errorHandler);
 });
 
-export const deleteProject = (project) => ((dispatch) => {
+export const deleteProject = (project) => ((dispatch, getState) => {
   return TaskkaApiClient
     .deleteProject(project)
     .then((project) => {
@@ -56,6 +56,10 @@ export const deleteProject = (project) => ((dispatch) => {
         type: ACTION_TYPES.PROJECTS.DELETE,
         data: {project},
       });
+
+      let state = getState();
+      let defaultProject = state.user.default_project_id;
+      return dispatch(setCurrentProject(defaultProject));
     })
     .catch(errorHandler);
 });
