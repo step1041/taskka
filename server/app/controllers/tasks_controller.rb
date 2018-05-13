@@ -2,17 +2,36 @@ class TasksController < ApplicationController
   before_action :authorize
 
   def index
-    render json: { tasks: current_user.tasks }
+    if params[:project_id]
+      begin
+        project = current_user.projects.find(params[:project_id])
+      rescue ActiveRecord::RecordNotFound
+        return render json: { error: "Project not found" }, status: 404
+      end
+
+      tasks = project.tasks
+    else
+      tasks = current_user.tasks
+    end
+
+    render json: { tasks: tasks }
   end
 
   def create
-    current_user.tasks.create(task_params)
-    render json: { task: current_user.tasks.last }, status: 201
+    begin
+      project = current_user.projects.find(params[:project_id])
+    rescue ActiveRecord::RecordNotFound
+      return render json: { error: "Project not found" }, status: 404
+    end
+
+    task = project.tasks.create(task_params)
+
+    render json: { task: task }, status: 201
   end
 
   def update
     begin
-      task = current_user.tasks.find(params[:id])
+      task = Task.joins(:project).where(projects: { owner_id: current_user.id }).find(params[:task_id])
     rescue ActiveRecord::RecordNotFound
       return render json: { error: "Task not found" }, status: 404
     end
@@ -25,7 +44,7 @@ class TasksController < ApplicationController
 
   def destroy
     begin
-      task = current_user.tasks.find(params[:id])
+      task = current_user.tasks.find(params[:task_id])
     rescue ActiveRecord::RecordNotFound
       return render json: { error: "Task not found" }, status: 404
     end

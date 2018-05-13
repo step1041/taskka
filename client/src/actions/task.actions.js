@@ -7,9 +7,9 @@ export const setTasks = (tasks) => ({
   data: {tasks},
 });
 
-export const addTask = (task) => ((dispatch) => {
+export const addTask = (projectId, task) => ((dispatch) => {
   return TaskkaApiClient
-    .addTask(task)
+    .addTask(projectId, task)
     .then((task) => {
       dispatch({
         type: ACTION_TYPES.TASKS.ADD,

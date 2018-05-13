@@ -60,7 +60,13 @@ export const deleteProject = (project) => ((dispatch) => {
     .catch(errorHandler);
 });
 
-export const setCurrentProject = (project) => ({
-  type: ACTION_TYPES.PROJECTS.SET_CURRENT,
-  data: {project},
+export const setCurrentProject = (projectId) => ((dispatch) => {
+  return TaskkaApiClient
+    .getProject(projectId)
+    .then((project) => {
+      dispatch({
+        type: ACTION_TYPES.PROJECTS.SET_CURRENT,
+        data: {project},
+      });
+    });
 });

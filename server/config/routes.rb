@@ -6,13 +6,17 @@ Rails.application.routes.draw do
   get    'user', to: 'user#view'
   patch  'user', to: 'user#update'
 
-  get    'projects',     to: 'projects#index'
-  post   'projects',     to: 'projects#create'
-  patch  'projects/:id', to: 'projects#update'
-  delete 'projects/:id', to: 'projects#destroy'
+  get    'projects',             to: 'projects#index'
+  post   'projects',             to: 'projects#create'
+  get    'projects/:project_id', to: 'projects#view'
+  patch  'projects/:project_id', to: 'projects#update'
+  delete 'projects/:project_id', to: 'projects#destroy'
 
-  get    'tasks',     to: 'tasks#index'
-  post   'tasks',     to: 'tasks#create'
-  patch  'tasks/:id', to: 'tasks#update'
-  delete 'tasks/:id', to: 'tasks#destroy'
+  get    'projects/:project_id/tasks', to: 'tasks#index'
+  post   'projects/:project_id/tasks', to: 'tasks#create'
+
+  get    'tasks',          to: 'tasks#index'
+  post   'tasks',          to: 'tasks#create'
+  patch  'tasks/:task_id', to: 'tasks#update'
+  delete 'tasks/:task_id', to: 'tasks#destroy'
 end

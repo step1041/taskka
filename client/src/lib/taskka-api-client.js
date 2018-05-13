@@ -27,6 +27,11 @@ class TaskkaApiClient {
       .then(({projects}) => projects);
   }
 
+  static getProject(projectId) {
+    return this.get(`/projects/${projectId}`)
+      .then(({project}) => project);
+  }
+
   static addProject(project) {
     return this.post('/projects', {project})
       .then(({project}) => project);
@@ -42,13 +47,21 @@ class TaskkaApiClient {
       .then(({project}) => project);
   }
 
-  static getTasks() {
-    return this.get('/tasks')
-      .then(({tasks}) => tasks);
+  static fetchTasks(project_id=null) {
+    let request;
+
+    if (project_id) {
+      request = this.get(`/projects/${project_id}/tasks`)
+    }
+    else {
+      request = this.get(`/tasks`);
+    }
+
+    return request.then(({tasks}) => tasks);
   }
 
-  static addTask(task) {
-    return this.post('/tasks', {task})
+  static addTask(project_id, task) {
+    return this.post('/tasks', {project_id, task})
       .then(({task}) => task);
   }
 
