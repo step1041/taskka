@@ -31,6 +31,7 @@ class Project extends Component {
   }
 
   onClick() {
+    if (this.props.isCurrentProject) { return; }
     this.props.dispatch(setCurrentProject(this.props.project.id))
   }
 }

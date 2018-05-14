@@ -32,9 +32,9 @@ class ProjectsPanel extends Component {
   render () {
     return (
       <div className={"projects-panel"}>
-        {this.props.projects.map((project) => (
-          <Project project={project} key={project.id}/>
-        ))}
+        {this.props.projects.map((project, key) => (
+          <Project project={project} key={key}/>
+        )).valueSeq()}
         <div className={'add-project'}>
           <form onSubmit={this.onAddProjectSubmit}>
             <input type={'text'} value={this.state.newProject.name} placeholder={"+ add project"} onChange={this.onNewProjectNameChange}/>

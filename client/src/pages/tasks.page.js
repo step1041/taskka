@@ -10,7 +10,7 @@ import './tasks.page.scss';
 
 const mapStateToProps = (state) => ({
   tasks: state.tasks,
-  currentProject: state.projects.find((p) => p.id === state.ui.currentProjectId),
+  currentProject: state.projects.get(state.ui.currentProjectId),
 });
 
 class TasksPage extends Component {

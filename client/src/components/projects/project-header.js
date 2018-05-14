@@ -3,11 +3,10 @@ import {connect} from 'react-redux';
 
 import './project-header.scss';
 import Button from '../ui/button';
-import {deleteTask} from '../../actions/task.actions';
 import {deleteProject} from '../../actions/project.actions';
 
 const mapStateToProps = (state) => ({
-  project: state.projects.find((p) => p.id === state.ui.currentProjectId),
+  project: state.projects.get(state.ui.currentProjectId),
   isDefaultProject: state.user && state.user.default_project_id === state.ui.currentProjectId,
 });
 
