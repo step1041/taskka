@@ -1,19 +1,24 @@
 .main-layout {
-  display: block;
+  position: relative;
+
   width: 100vw;
   height: 100vh;
+
+  display: grid;
+  grid-template-rows: 50px auto;
+  grid-template-columns: 200px auto;
+  grid-template-areas:
+    'header header'
+    'projects page'
+  ;
+
+  overflow: hidden;
 
   .projects {
     color: white;
     background: black;
 
-    position: absolute;
-
-    width: 200px;
-    height: calc(100vh - 50px);
-    top: 50px;
-
-    z-index: 100;
+    grid-area: projects;
 
     input[type="text"] {
       color: white;
@@ -21,6 +26,8 @@
   }
 
   .header {
+    grid-area: header;
+
     color: white;
     background: grey;
 
@@ -35,7 +42,7 @@
 
     .projects-panel-toggle {
       display: none;
-      
+
       padding: 16px;
       margin: -16px;
 
@@ -51,18 +58,35 @@
   }
 
   .page {
-    margin-left: 200px;
+    grid-area: page;
+
+    justify-self: stretch;
+    align-self: stretch;
+
     padding: 16px;
+
+    overflow: auto;
   }
 }
 
 @media(max-width: 600px) {
   .main-layout {
+    grid-template-areas:
+      'header header'
+      'page   page'
+    ;
+
     .projects {
+      width: calc(100vw - 100px);
+      height: calc(100vh - 50px);
+
+      position: absolute;
+      top: 50px;
+      left: -500px;
+
       transition: left 500ms;
 
-      width: calc(100vw - 100px);
-      left: -500px
+      z-index: 100;
     }
 
     &.menu-open {
@@ -86,15 +110,9 @@
     }
 
     .header {
-      margin-left: 0;
-
       .projects-panel-toggle {
         display: inline-block;
       }
-    }
-
-    .page {
-      margin-left: 0;
     }
   }
 }

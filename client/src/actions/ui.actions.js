@@ -5,7 +5,7 @@ export const openProjectsPanel = () => ({
 });
 
 export const closeProjectsPanel = () => ({
-  type: ACTION_TYPES.UI.PROJECTS_PANEL.close,
+  type: ACTION_TYPES.UI.PROJECTS_PANEL.CLOSE,
 });
 
 export const toggleProjectsPanel = () => ((dispatch, getState) => {
