@@ -1,7 +1,18 @@
 body {
-  margin: 16px;
+  overflow: hidden;
 
   * {
     box-sizing: border-box;
+  }
+
+  input[type="text"],
+  textarea {
+    border: none;
+    border-bottom: 1px solid gray;
+
+    padding: 4px;
+    width: 100%;
+
+    background: none;
   }
 }

@@ -2,71 +2,66 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
 
-import TaskkaApiClient from '../lib/taskka-api-client';
-import errorHandler from '../lib/error-handler';
-
-import {setTasks} from '../actions/task.actions';
-
+import ProjectHeader from '../components/projects/project-header';
 import TaskList from '../components/tasks/task-list';
 import AddTask from '../components/tasks/add-task';
 
 import './tasks.page.scss';
 
 const mapStateToProps = (state) => ({
-  user: state.user,
   tasks: state.tasks,
+  currentProject: state.projects.get(state.ui.currentProjectId),
 });
 
 class TasksPage extends Component {
-  componentDidMount() {
-    TaskkaApiClient
-      .get('/tasks')
-      .then(({tasks}) => this.props.dispatch(setTasks(tasks)))
-      .catch(errorHandler);
-  }
-
   render() {
-    if (!this.props.user) {
+    if (!this.props.currentProject) {
       return (<div>Loading...</div>);
     }
 
     return (
       <div>
-        <h1>New</h1>
-        <div className={'task-list'}>
-          <AddTask state={'new'} />
-          <TaskList state={'new'}/>
+        <ProjectHeader />
+
+        <div>
+          <h2>New</h2>
+          <div className={'task-list'}>
+            <AddTask state={'new'} />
+            <TaskList state={'new'} />
+          </div>
         </div>
 
-        <h1>Complete</h1>
-        <div className={'task-list'}>
-          <AddTask state={'complete'} />
-        </div>
-        {
-          Object
-            .entries(this.groupTasksByUpdate(this.completeTasks()))
-            .map(([day, tasks]) => (
-              <div key={day}>
-                <h2>{day}</h2>
-                <div className={'task-list'}>
-                  <TaskList tasks={tasks}/>
+        <div>
+          <h2>Complete</h2>
+          <div className={'task-list'}>
+            <AddTask state={'complete'} />
+          </div>
+          {
+            Object
+              .entries(this.groupTasksByUpdate(this.completeTasks()))
+              .map(([day, tasks]) => (
+                <div key={day}>
+                  <h3>{day}</h3>
+                  <div className={'task-list'}>
+                    <TaskList tasks={tasks} />
+                  </div>
                 </div>
-              </div>
-            ))
-        }
+              ))
+          }
+        </div>
       </div>
     );
   }
 
   completeTasks() {
-    return this.props.tasks.filter((task) => task.state === "complete");
+    return this.props.tasks.filter((task) => task.state === 'complete');
   }
 
   groupTasksByUpdate(tasks) {
     let groups = {};
 
     tasks
-      .map((task) => ({ updatedAt: moment(task.updated_at), task }))
+      .map((task) => ({updatedAt: moment(task.updated_at), task}))
       .sort((left, right) => moment.utc(left.updatedAt).diff(moment.utc(right.updatedAt)))
       .reverse()
       .forEach(({updatedAt, task}) => {

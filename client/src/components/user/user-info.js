@@ -2,25 +2,31 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
+import './user-info.scss';
+
 const mapStateToProps = (state) => ({
   user: state.user,
-  isNewUser: state.user && !state.user.username,
 });
 
 class UserInfo extends Component {
   render() {
-    let {user, isNewUser} = this.props;
+    let {user} = this.props;
 
-    if (user && !isNewUser) {
+    if (!user) {
       return (
-        <div>
-          Welcome {user.username} | <Link to={'/logout'}>Logout</Link>
-        </div>
+        <div>Loading...</div>
       )
     }
-    else {
-      return null;
-    }
+
+    return (
+      <div className={"user-info"}>
+        {user.username && (
+          <span>Welcome {user.username} | </span>
+        )}
+
+        <Link className={"logout-link"} to={'/logout'}>Logout</Link>
+      </div>
+    )
   }
 }
 

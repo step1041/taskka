@@ -16,8 +16,6 @@ describe TasksController do
       end
 
       context "when the user has no tasks" do
-        before { user.tasks = [] }
-
         it "returns an empty array" do
           get :index
 
@@ -63,22 +61,24 @@ describe TasksController do
 
     context "when authorized" do
       let(:user) { User.create() }
+      let(:project) { user.default_project }
+      let(:params) {{
+        project_id: project.id,
+        task: {
+          name: "Example Task"
+        }
+      }}
 
       before { authorize_user(user) }
 
       it "creates a new task" do
         expect {
-          put :create, params: { task: {
-            name: "Example Task"
-          } }
+          post :create, params: params
         }.to change { Task.count }.by(1)
       end
 
-      it "adds the task to the current user" do
-        post :create, params: { task: {
-          name: "Example Task"
-        } }
-
+      it "adds the task to the project" do
+        post :create, params: params
         task = Task.last
 
         expect(user.tasks).to include(task)
@@ -86,9 +86,7 @@ describe TasksController do
 
       it "sets the correct name on the new task" do
         expect {
-          post :create, params: { task: {
-            name: "Example Task"
-          } }
+          post :create, params: params
         }.to change { Task.count }.by(1)
 
         task = Task.last
@@ -96,10 +94,7 @@ describe TasksController do
       end
 
       it "responds with the new task" do
-        post :create, params: { task: {
-          name: "Example Task"
-        } }
-
+        post :create, params: params
         expect(response.status).to eq(201)
 
         task = Task.last
@@ -112,7 +107,7 @@ describe TasksController do
   describe "PATCH #update" do
     it "calls authorize" do
       expect(controller).to receive(:authorize).and_call_original
-      patch :update, params: { :id => 1 }
+      patch :update, params: { :task_id => 1 }
     end
 
     context "when authorized" do
@@ -122,33 +117,35 @@ describe TasksController do
 
       context "when the task does not exist" do
         it "renders a 404 response" do
-          patch :update, params: { :id => 1 }
+          patch :update, params: { :task_id => 1 }
           expect(response).to have_http_status(404)
         end
       end
 
       context "when the task belongs to another user" do
         let (:other_user) { User.create() }
-        let (:task) { other_user.tasks.create(name: 'other task') }
+        let (:project) { other_user.default_project }
+        let (:task) { project.tasks.create(name: 'other task') }
 
         it "renders a 404 response" do
-          patch :update, params: { :id => task.id }
+          patch :update, params: { :task_id => task.id }
           expect(response).to have_http_status(404)
         end
       end
 
       context "when the task belongs to the current user" do
-        let (:task) { user.tasks.create(name: 'Example Task') }
+        let (:project) { user.default_project }
+        let (:task) { project.tasks.create(name: 'Example Task') }
 
         it "updates the task" do
-          patch :update, params: { :id => task.id, task: { name: 'New name'}}
+          patch :update, params: { :task_id => task.id, task: { name: 'New name'}}
 
           task.reload
           expect(task.name).to eq("New name")
         end
 
         it "renders the updated task" do
-          patch :update, params: { :id => task.id, task: { name: 'New name'}}
+          patch :update, params: { :task_id => task.id, task: { name: 'New name'}}
 
           task.reload
           body = JSON.parse(response.body)
@@ -161,7 +158,7 @@ describe TasksController do
   describe "DELETE #destroy" do
     it "calls authorize" do
       expect(controller).to receive(:authorize).and_call_original
-      delete :destroy, params: { :id => 1 }
+      delete :destroy, params: { :task_id => 1 }
     end
 
     context "when authorized" do
@@ -170,14 +167,15 @@ describe TasksController do
       before { authorize_user(user) }
 
       context 'when the task exists' do
-        let! (:task) { user.tasks.create(:name => "Example task") }
+        let (:project) { user.default_project }
+        let! (:task) { project.tasks.create(:name => "Example task") }
 
         it 'deletes the task' do
-          expect{ delete :destroy, params: { id: task.id } }.to change{Task.count}.by(-1)
+          expect{ delete :destroy, params: { task_id: task.id } }.to change{Task.count}.by(-1)
         end
 
         it 'renders the deleted task' do
-          delete :destroy, params: { id: task.id }
+          delete :destroy, params: { task_id: task.id }
 
           body = JSON.parse(response.body)
           expect(body["task"]).to eq(JSON.parse(task.to_json))
@@ -186,17 +184,18 @@ describe TasksController do
 
       context 'when the task does not exist' do
         it "renders a 404 response" do
-          delete :destroy, params: { :id => 1 }
+          delete :destroy, params: { :task_id => 1 }
           expect(response).to have_http_status(404)
         end
       end
 
       context 'when the task belongs to another user' do
-        let! (:other_user) { User.create }
-        let! (:task) { other_user.tasks.create(name: 'Other task') }
+        let (:other_user) { User.create }
+        let (:project) { other_user.default_project }
+        let (:task) { project.tasks.create(name: 'Other task') }
 
         it "renders a 404 response" do
-          delete :destroy, params: { :id => task.id }
+          delete :destroy, params: { :task_id => task.id }
           expect(response).to have_http_status(404)
         end
       end

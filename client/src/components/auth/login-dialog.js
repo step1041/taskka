@@ -2,18 +2,27 @@ import React, {Component} from 'react';
 
 import config from 'taskka-config';
 
+import "./login-dialog.scss";
+
 const GOOGLE_ENDPOINT = 'https://accounts.google.com/o/oauth2/v2/auth';
 
 class LoginDialog extends Component {
+  constructor() {
+    super();
+
+    this.googleLogin = this.googleLogin.bind();
+  }
+
   render() {
     return (
-      <div>
-        <a href={this.getGoogleAuthUrl()}>Log in with Google</a>
+      <div className={"login-dialog"}>
+        Sign in with
+        <div className={"btn google-btn"} onClick={this.googleLogin}>Google</div>
       </div>
     );
   }
 
-  getGoogleAuthUrl() {
+  googleLogin() {
     let url_data = {
       scope: 'https://www.googleapis.com/auth/plus.me',
       redirect_uri: `${config.clientUrl}/auth/google/callback`,
@@ -26,7 +35,7 @@ class LoginDialog extends Component {
         .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
         .join('&');
 
-    return `${GOOGLE_ENDPOINT}?${query}`;
+    window.location = `${GOOGLE_ENDPOINT}?${query}`;
   }
 }
 

@@ -6,7 +6,7 @@ import TaskkaApiClient from '../lib/taskka-api-client';
 import errorHandler from '../lib/error-handler';
 import {setUser} from '../actions/user.actions';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 });
 
 class NewUserPage extends Component {
@@ -49,11 +49,11 @@ class NewUserPage extends Component {
 
     if (this.state.username) {
       TaskkaApiClient
-        .patch('/user', {
-          user: { username: this.state.username }
+        .updateCurrentUser({
+          username: this.state.username
         })
-        .then((response) => {
-          this.props.dispatch(setUser(response.user));
+        .then((user) => {
+          this.props.dispatch(setUser(user));
           this.props.dispatch(push('/'));
         })
         .catch(errorHandler);

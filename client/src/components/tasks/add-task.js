@@ -7,7 +7,9 @@ import {addTask} from '../../actions/task.actions';
 
 import './add-task.scss';
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  projectId: state.ui.currentProjectId,
+});
 
 class AddTask extends Component {
   constructor(props) {
@@ -61,7 +63,7 @@ class AddTask extends Component {
     }
 
     this.setState({submitting: true});
-    this.props.dispatch(addTask(this.state.task))
+    this.props.dispatch(addTask(this.props.projectId, this.state.task))
       .then(() => this.setState(this.getInitialState()));
   }
 

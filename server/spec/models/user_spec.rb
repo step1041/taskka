@@ -8,7 +8,7 @@ describe User do
   end
 
   describe 'relations' do
-    it { is_expected.to respond_to(:tasks) }
+    it { is_expected.to respond_to(:projects) }
   end
 
   describe "creation" do
