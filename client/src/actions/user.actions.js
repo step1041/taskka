@@ -1,13 +1,24 @@
-export const setUser = (user) => ({
-  type: 'USER.SET',
-  data: { user },
+import ACTION_TYPES from './action-types';
+import {setCurrentProject} from './project.actions';
+
+export const setUser = (user) => ((dispatch) => {
+  dispatch({
+      type: ACTION_TYPES.USER.SET,
+      data: { user },
+  });
+
+  return dispatch(setCurrentProject(user.default_project_id));
 });
 
-export const login = (user) => ({
-  type: 'USER.LOGIN',
-  data: { user }
+export const login = (user) => ((dispatch) => {
+  dispatch({
+    type: ACTION_TYPES.USER.LOGIN,
+    data: { user }
+  });
+
+  return dispatch(setCurrentProject(user.default_project_id));
 });
 
 export const logout = () => ({
-  type: 'USER.LOGOUT',
+  type: ACTION_TYPES.USER.LOGOUT,
 });

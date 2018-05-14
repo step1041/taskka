@@ -1,8 +1,10 @@
+import ACTION_TYPES from './action-types';
+
 export const setAccessToken = (accessToken) => ({
-  type: "ACCESS_TOKEN.SET",
+  type: ACTION_TYPES.ACCESS_TOKEN.SET,
   data: { accessToken },
 });
 
 export const removeAccessToken = () => ({
-  type: "ACCESS_TOKEN.REMOVE",
+  type: ACTION_TYPES.ACCESS_TOKEN.REMOVE,
 });

@@ -1,20 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Route, Redirect} from 'react-router'
 
 import {setUser} from '../actions/user.actions';
 
-import ConnectedSwitch from '../lib/connected-switch';
 import errorHandler from '../lib/error-handler';
-
-import UserInfo from '../components/user/user-info';
-
-import LoginPage from '../pages/login.page';
-import LogoutPage from '../pages/logout.page';
-import VerifyPage from '../pages/verify.page';
-import TasksPage from '../pages/tasks.page';
-import NewUserPage from '../pages/new-user.page';
 import TaskkaApiClient from '../lib/taskka-api-client';
+
+import MainLayout from './main.layout';
+import LoggedOutLayout from './logged-out.layout';
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -25,30 +18,22 @@ class AppLayout extends Component {
   componentDidMount() {
     if (!this.props.user && this.props.accessToken) {
       TaskkaApiClient
-        .get('/user')
-        .then((response) => {
-          this.props.dispatch(setUser(response.user));
-        })
-        .catch(errorHandler)
+        .getCurrentUser()
+        .then((user) => this.props.dispatch(setUser(user)))
+        .catch(errorHandler);
     }
   }
 
-  render () {
-    return (
-      <div>
-        <UserInfo/>
-        <ConnectedSwitch>
-          <Route path={'/login'} component={LoginPage} />
-          <Route path={'/logout'} component={LogoutPage} />
-          <Route path={'/auth/:provider/callback'} component={VerifyPage} />
-          <Route path={'/user/new'} component={NewUserPage} />
-          <Route path={'/tasks'} component={TasksPage} />
-          <Route>
-            { this.props.accessToken ? <Redirect to={'/tasks'} /> : <Redirect to={'/login'} /> }
-          </Route>
-        </ConnectedSwitch>
-      </div>
-    );
+  render() {
+    if (this.props.user) {
+      return <MainLayout/>
+    }
+    else if (this.props.accessToken) {
+      return <div>Loading...</div>
+    }
+    else {
+      return <LoggedOutLayout/>
+    }
   }
 }
 

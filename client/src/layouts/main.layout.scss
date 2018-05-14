@@ -1,0 +1,100 @@
+.main-layout {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+
+  .projects {
+    color: white;
+    background: black;
+
+    position: absolute;
+
+    width: 200px;
+    height: calc(100vh - 50px);
+    top: 50px;
+
+    z-index: 100;
+
+    input[type="text"] {
+      color: white;
+    }
+  }
+
+  .header {
+    color: white;
+    background: grey;
+
+    height: 50px;
+
+    .app-name {
+      background-color: black;
+      display: inline-block;
+      padding: 16px;
+      margin-right: 16px;
+    }
+
+    .projects-panel-toggle {
+      display: none;
+      
+      padding: 16px;
+      margin: -16px;
+
+      cursor: default;
+    }
+
+    .user-info {
+      display: inline-block;
+      float: right;
+
+      padding: 16px;
+    }
+  }
+
+  .page {
+    margin-left: 200px;
+    padding: 16px;
+  }
+}
+
+@media(max-width: 600px) {
+  .main-layout {
+    .projects {
+      transition: left 500ms;
+
+      width: calc(100vw - 100px);
+      left: -500px
+    }
+
+    &.menu-open {
+      .projects-panel-toggle {
+        background-color: black;
+        color: white;
+      }
+
+      .projects {
+        left: 0;
+      }
+
+      .click-shroud {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+
+    .header {
+      margin-left: 0;
+
+      .projects-panel-toggle {
+        display: inline-block;
+      }
+    }
+
+    .page {
+      margin-left: 0;
+    }
+  }
+}

@@ -1,18 +1,19 @@
 import TaskkaApiClient from '../lib/taskka-api-client';
 import errorHandler from '../lib/error-handler';
+import ACTION_TYPES from './action-types';
 
 export const setTasks = (tasks) => ({
-  type: 'TASKS.SET',
+  type: ACTION_TYPES.TASKS.SET,
   data: {tasks},
 });
 
-export const addTask = (task) => ((dispatch) => {
+export const addTask = (projectId, task) => ((dispatch) => {
   return TaskkaApiClient
-    .post('/tasks', {task})
-    .then(({task: newTask}) => {
+    .addTask(projectId, task)
+    .then((task) => {
       dispatch({
-        type: 'TASKS.ADD',
-        data: {task: newTask},
+        type: ACTION_TYPES.TASKS.ADD,
+        data: {task},
       });
     })
     .catch(errorHandler);
@@ -20,11 +21,11 @@ export const addTask = (task) => ((dispatch) => {
 
 export const updateTask = (task) => ((dispatch) => {
   return TaskkaApiClient
-    .patch(`/tasks/${task.id}`, {task})
-    .then(({task: newTask}) => {
+    .updateTask(task)
+    .then((task) => {
       dispatch({
-        type: 'TASKS.UPDATE',
-        data: {task: newTask},
+        type: ACTION_TYPES.TASKS.UPDATE,
+        data: {task},
       });
     })
     .catch(errorHandler);
@@ -32,11 +33,11 @@ export const updateTask = (task) => ((dispatch) => {
 
 export const deleteTask = (task) => ((dispatch) => {
   return TaskkaApiClient
-    .delete(`/tasks/${task.id}`)
-    .then(({task: deletedTask}) => {
+    .deleteTask(task)
+    .then((task) => {
       dispatch({
-        type: 'TASKS.DELETE',
-        data: {task: deletedTask},
+        type: ACTION_TYPES.TASKS.DELETE,
+        data: {task},
       });
     })
     .catch(errorHandler);

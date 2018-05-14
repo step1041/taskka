@@ -1,0 +1,21 @@
+.project {
+  display: inline-block;
+
+  padding: 16px;
+
+  width: 100%;
+
+  &.current {
+    background-color: lightgray;
+    color: black;
+  }
+
+  &:hover {
+    background-color: darkgray;
+    color: black;
+  }
+
+  input {
+    width: 100%;
+  }
+}
