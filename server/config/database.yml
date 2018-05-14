@@ -37,5 +37,5 @@ test:
 production:
   <<: *default
   database: taskka_prod
-  username: server
+  username: <%= ENV['TASKKA_DB_USER'] %>
   password: <%= ENV['TASKKA_DB_PASSWORD'] %>
