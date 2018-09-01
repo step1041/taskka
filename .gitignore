@@ -10,3 +10,5 @@ client/src/config\.js
 client/src/config\.dev\.js
 
 client/src/config\.prod\.js
+
+\.idea/workspace\.xml
