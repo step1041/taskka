@@ -20,3 +20,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore files with passwords
+/config/secrets.yml
+
+# Ignore IDE user specific files
+/.idea
