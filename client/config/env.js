@@ -72,6 +72,12 @@ function getClientEnvironment(publicUrl) {
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || 'development',
+
+        // Taskka specific variables
+        TASKKA_CLIENT_URL: process.env.TASKKA_CLIENT_URL,
+        TASKKA_SERVER_URL: process.env.TASKKA_SERVER_URL,
+        TASKKA_GOOGLE_CLIENT_ID: process.env.TASKKA_GOOGLE_CLIENT_ID,
+
         // Useful for resolving the correct path to static assets in `public`.
         // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
         // This should only be used as an escape hatch. Normally you would put
