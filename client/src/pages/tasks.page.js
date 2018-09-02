@@ -38,7 +38,7 @@ class TasksPage extends Component {
           </div>
           {
             Object
-              .entries(this.groupTasksByUpdate(this.completeTasks()))
+              .entries(this.groupTasksByCompletedAt(this.completeTasks()))
               .map(([day, tasks]) => (
                 <div key={day}>
                   <h3>{day}</h3>
@@ -57,12 +57,12 @@ class TasksPage extends Component {
     return this.props.tasks.filter((task) => task.state === 'complete');
   }
 
-  groupTasksByUpdate(tasks) {
+  groupTasksByCompletedAt(tasks) {
     let groups = {};
 
     tasks
-      .map((task) => ({updatedAt: moment(task.updated_at), task}))
-      .sort((left, right) => moment.utc(left.updatedAt).diff(moment.utc(right.updatedAt)))
+      .map((task) => ({completedAt: moment(task.completed_at), task}))
+      .sort((a, b) => moment.utc(a.completedAt).diff(moment.utc(b.completedAt)))
       .reverse()
       .forEach(({updatedAt, task}) => {
         let dateString = moment(task.updated_at).format('MMMM Do YYYY');
