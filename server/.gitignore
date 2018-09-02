@@ -25,4 +25,4 @@
 /config/secrets.yml
 
 # Ignore IDE user specific files
-/.idea
+/.idea/workspace.xml

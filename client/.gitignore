@@ -24,4 +24,5 @@ src/config\.js
 src/config.dev.js
 src/config.prod.js
 
-/.idea
+# Ignore IDE user specific files
+/.idea/workspace.xml
