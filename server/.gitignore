@@ -20,3 +20,10 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore files with passwords and secrets
+/.env.local
+/.env.*.local
+
+# Ignore IDE user specific files
+/.idea/workspace.xml

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="postgres@localhost" uuid="7c3db42b-94f6-4d1c-89a6-5084221278a2">
+      <database-info product="PostgreSQL" version="10.3" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" family="POSTGRES" exact-version="10.3">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>postgres</user-name>
+      <introspection-schemas>postgres:public</introspection-schemas>
+    </data-source>
+    <data-source name="test" uuid="a5efe34e-418e-42b9-a9e4-e161fe9b03a0">
+      <database-info product="PostgreSQL" version="10.3" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" family="POSTGRES" exact-version="10.3">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <user-name>taskka</user-name>
+      <introspection-schemas>taskka_test:public</introspection-schemas>
+    </data-source>
+    <data-source name="development" uuid="32caefea-1651-4bb7-9f2e-6220311ce658">
+      <database-info product="PostgreSQL" version="10.3" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" family="POSTGRES" exact-version="10.3">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <user-name>taskka</user-name>
+      <introspection-schemas>taskka_dev:public</introspection-schemas>
+    </data-source>
+    <data-source name="production" uuid="55b4d779-6752-49e4-aa9f-25951888fa35">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" family="POSTGRES" exact-version="0.0" />
+      <first-sync>true</first-sync>
+      <user-name>server</user-name>
+    </data-source>
+  </component>
+</project>

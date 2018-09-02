@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import config from 'taskka-config';
+import config from '../../config';
 
 import "./login-dialog.scss";
 
