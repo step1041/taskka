@@ -9,5 +9,4 @@ CREATE USER taskka WITH PASSWORD 'taskka_login';
 GRANT ALL ON DATABASE taskka_dev TO taskka;
 GRANT ALL ON DATABASE taskka_test TO taskka;
 
-ALTER USER taskka CREATEDB;
 ALTER DATABASE taskka_test OWNER to taskka;
