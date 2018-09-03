@@ -37,12 +37,26 @@ describe UserController do
 
       before { authorize_user(user) }
 
-      context "when a username is given" do
-        it "updates the current user's name" do
-          patch :update, params: { user: { username: "NewUsername"} }
-          user.reload
-          expect(user.username).to eq("NewUsername")
-        end
+      it "does not allow updating the current user's access_token" do
+        patch :update, params: { user: { access_token: "new token" } }
+        user.reload
+        expect(user.access_token).not_to eq("new token")
+      end
+
+      it "allows updating the current user's name" do
+        patch :update, params: { user: { username: "NewUsername" } }
+        user.reload
+        expect(user.username).to eq("NewUsername")
+      end
+
+      it "allows updating the current user's working day dates" do
+        patch :update, params: { user: {
+          current_working_day: Date.today,
+          last_working_day: Date.yesterday,
+        } }
+        user.reload
+        expect(user.current_working_day).to eq(Date.today)
+        expect(user.last_working_day).to eq(Date.yesterday)
       end
     end
   end

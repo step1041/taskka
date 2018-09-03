@@ -6,7 +6,7 @@ class UserController < ApplicationController
   end
 
   def update
-    attributes = params.permit(user: [ :username ])["user"]
+    attributes = params.permit(user: [ :username, :last_working_day, :current_working_day ])["user"]
 
     current_user.update_attributes(attributes)
     current_user.save
