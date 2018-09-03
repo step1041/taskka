@@ -6,10 +6,8 @@ describe ProjectsController do
     end
   end
 
-
-
   context "when authorized" do
-    let(:user) { User.create() }
+    let(:user) { FactoryBot.create(:user) }
 
     before { authorize_user(user) }
 
@@ -25,11 +23,7 @@ describe ProjectsController do
     end
 
     context "when the user has projects" do
-      before do
-        user.projects.create(name: 'Example Project 1')
-        user.projects.create(name: 'Example Project 2')
-        user.projects.create(name: 'Example Project 3')
-      end
+      before { FactoryBot.create_list(:project, 3, :owner => user) }
 
       it "returns an empty array" do
         get :index
@@ -40,8 +34,8 @@ describe ProjectsController do
     end
 
     context "when another user has projects" do
-      let! (:other_user) { User.create(username: "OtherUser") }
-      let! (:other_project) { other_user.projects.create(name: 'Other Project') }
+      let! (:other_user) { FactoryBot.create(:user) }
+      let! (:other_project) { FactoryBot.create(:project, :owner => other_user) }
 
       it "does not return other user's projects" do
         get :index

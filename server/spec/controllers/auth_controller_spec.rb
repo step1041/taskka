@@ -69,7 +69,7 @@ describe AuthController do
       end
 
       context 'when the user already exists' do
-        let! (:user) { User.create(username: 'ExampleUser', google_id: google_id) }
+        let! (:user) { FactoryBot.create(:user, :google_id => google_id) }
 
         it 'does not create a new user' do
           expect { do_request }.not_to change{ User.count }

@@ -6,7 +6,7 @@ describe UserController do
     end
 
     context "when authorized" do
-      let (:user) { User.create(username: "ExampleUser") }
+      let(:user) { FactoryBot.create(:user) }
 
       before { authorize_user(user) }
 
@@ -33,7 +33,7 @@ describe UserController do
     end
 
     context "when authorized" do
-      let (:user) { User.create }
+      let(:user) { FactoryBot.create(:user) }
 
       before { authorize_user(user) }
 

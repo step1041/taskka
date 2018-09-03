@@ -1,16 +1,17 @@
 describe ApplicationController do
-  controller do
-    before_action :authorize
-    def index; end
-  end
-
-  before do
-    routes.draw do
-      get 'index' => 'anonymous#index'
-    end
-  end
-
   describe '#authorize' do
+    controller do
+      before_action :authorize
+      def index; end
+    end
+
+    before do
+      # Create dummy route so that we can access the controller
+      routes.draw do
+        get 'index' => 'anonymous#index'
+      end
+    end
+
     context "when there is no Authorization header" do
       before { request.headers["Authorization"] = nil }
 

@@ -6,7 +6,7 @@ describe TasksController do
     end
 
     context "when authorized" do
-      let(:user) { User.create() }
+      let(:user) { FactoryBot.create(:user) }
 
       before { authorize_user(user) }
 
@@ -60,7 +60,7 @@ describe TasksController do
     end
 
     context "when authorized" do
-      let(:user) { User.create() }
+      let(:user) { FactoryBot.create(:user) }
       let(:project) { user.default_project }
       let(:params) {{
         project_id: project.id,
@@ -111,7 +111,7 @@ describe TasksController do
     end
 
     context "when authorized" do
-      let(:user) { User.create() }
+      let(:user) { FactoryBot.create(:user) }
 
       before { authorize_user(user) }
 
@@ -123,9 +123,8 @@ describe TasksController do
       end
 
       context "when the task belongs to another user" do
-        let (:other_user) { User.create() }
-        let (:project) { other_user.default_project }
-        let (:task) { project.tasks.create(name: 'other task') }
+        let (:other_user) { FactoryBot.create(:user) }
+        let (:task) { FactoryBot.create(:task, :project => other_user.default_project) }
 
         it "renders a 404 response" do
           patch :update, params: { :task_id => task.id }
@@ -134,8 +133,7 @@ describe TasksController do
       end
 
       context "when the task belongs to the current user" do
-        let (:project) { user.default_project }
-        let (:task) { project.tasks.create(name: 'Example Task') }
+        let (:task) { FactoryBot.create(:task, :project => user.default_project) }
 
         it "updates the task" do
           patch :update, params: { :task_id => task.id, task: { name: 'New name'}}
@@ -162,13 +160,12 @@ describe TasksController do
     end
 
     context "when authorized" do
-      let(:user) { User.create() }
+      let(:user) { FactoryBot.create(:user) }
 
       before { authorize_user(user) }
 
       context 'when the task exists' do
-        let (:project) { user.default_project }
-        let! (:task) { project.tasks.create(:name => "Example task") }
+        let! (:task) { FactoryBot.create(:task, :project => user.default_project) }
 
         it 'deletes the task' do
           expect{ delete :destroy, params: { task_id: task.id } }.to change{Task.count}.by(-1)
@@ -190,9 +187,8 @@ describe TasksController do
       end
 
       context 'when the task belongs to another user' do
-        let (:other_user) { User.create }
-        let (:project) { other_user.default_project }
-        let (:task) { project.tasks.create(name: 'Other task') }
+        let (:other_user) { FactoryBot.create(:user) }
+        let (:task) { FactoryBot.create(:task, :project => other_user.default_project) }
 
         it "renders a 404 response" do
           delete :destroy, params: { :task_id => task.id }
