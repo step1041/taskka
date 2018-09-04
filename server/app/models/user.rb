@@ -8,20 +8,16 @@ class User < ApplicationRecord
   after_create :create_default_project
 
   def serializable_hash(options)
-    if !options[:methods]
-      options[:methods] = [
-        :default_project_id,
-      ]
-    end
+    options[:methods] ||= [
+      :default_project_id,
+    ]
 
-    if !options[:except]
-      options[:except] = [
-        :google_token,
-        :google_id,
-      ]
-    end
+    options[:except] ||= [
+      :google_token,
+      :google_id,
+    ]
 
-    super(options)
+    super
   end
 
   def generate_new_access_token

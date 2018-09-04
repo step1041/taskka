@@ -50,4 +50,22 @@ describe User do
       it("returns false") { expect(user.new_user?).to eq(false) }
     end
   end
+
+  describe "#to_json" do
+    let (:user) { FactoryBot.create(:user) }
+    let (:user_json) { JSON.parse(user.to_json) }
+
+    it "does not include google_token" do
+      expect(user_json).not_to have_key("google_token")
+    end
+
+    it "does not include google_id" do
+      expect(user_json).not_to have_key("google_id")
+    end
+
+    it "does include default_project_id" do
+      expect(user_json).to have_key("default_project_id")
+      expect(user_json["default_project_id"]).to eq(user.default_project_id)
+    end
+  end
 end
