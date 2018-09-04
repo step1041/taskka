@@ -5,7 +5,11 @@ class Task < ApplicationRecord
   validates :name, presence: true
   validates :state, presence: true
 
-  before_save -> do
+  after_create -> do
+    self.state_changes.create!(:old_state => nil, :new_state => self.state)
+  end
+
+  before_update -> do
     if self.state_changed?
       self.completed_at = self.state == "complete" ? Time.now : nil
       self.state_changes.create!(:old_state => self.state_was, :new_state => self.state)
