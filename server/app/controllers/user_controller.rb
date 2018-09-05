@@ -13,4 +13,10 @@ class UserController < ApplicationController
 
     render json: { user: current_user }
   end
+
+  def new_day
+    current_user.new_working_day
+
+    render json: { user: current_user }
+  end
 end

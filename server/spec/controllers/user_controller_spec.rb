@@ -60,4 +60,31 @@ describe UserController do
       end
     end
   end
+
+  describe "POST #new_day" do
+    it "calls authorize" do
+      expect(controller).to receive(:authorize).and_call_original
+      post :new_day
+    end
+
+    context "when authorized" do
+      let(:user) { FactoryBot.create(:user) }
+
+      before { authorize_user(user) }
+
+      it 'triggers a new working day for the current user' do
+        expect_any_instance_of(User).to receive(:new_working_day).and_call_original
+
+        post :new_day
+      end
+
+      it "returns the updated user" do
+        post :new_day
+
+        body = JSON.parse(response.body)
+        user_json = body["user"]
+        expect(Date.parse(user_json["current_working_day"])).to eq(Date.today)
+      end
+    end
+  end
 end
