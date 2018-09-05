@@ -75,6 +75,11 @@ class TaskkaApiClient {
       .then(({task}) => task);
   }
 
+  static newWorkingDay() {
+    return this.post(`/user/new_day`)
+      .then(({user}) => user);
+  }
+
   /* ==== basic requests stuff ==== */
 
   static get(path) {
