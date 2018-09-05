@@ -1,6 +1,7 @@
 import TaskkaApiClient from '../lib/taskka-api-client';
 import errorHandler from '../lib/error-handler';
 import ACTION_TYPES from './action-types';
+import {setTasks} from './task.actions';
 
 const activeRequests = {};
 
@@ -72,5 +73,6 @@ export const setCurrentProject = (projectId) => ((dispatch) => {
         type: ACTION_TYPES.PROJECTS.SET_CURRENT,
         data: {project},
       });
+      dispatch(setTasks(project.tasks));
     });
 });

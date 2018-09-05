@@ -11,9 +11,6 @@ const tasksReducer = (state = initState, action) => {
     case ACTION_TYPES.USER.LOGOUT:
       return initState;
 
-    case ACTION_TYPES.PROJECTS.SET_CURRENT:
-      action.data.tasks = action.data.project.tasks;
-      // eslint-disable-next-line no-fallthrough
     case ACTION_TYPES.TASKS.SET:
       tasks = action.data.tasks.map((task) => [task.id, task]);
       return Map(tasks);
