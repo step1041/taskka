@@ -48,4 +48,12 @@ class User < ApplicationRecord
   def default_project_id
     self.default_project.id
   end
+
+  def new_working_day
+    self.last_working_day = self.current_working_day
+    self.current_working_day = Date.today
+    self.save!
+
+    self.tasks.where(:state => "in_progress").update_all(:state => 'new')
+  end
 end

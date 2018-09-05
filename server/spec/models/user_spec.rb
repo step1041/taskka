@@ -68,4 +68,29 @@ describe User do
       expect(user_json["default_project_id"]).to eq(user.default_project_id)
     end
   end
+
+  describe "#new_working_day" do
+    let (:user) { FactoryBot.create(:user) }
+
+    it "rotates the working days" do
+      user.current_working_day = Date.yesterday
+      user.last_working_day = 2.days.ago
+
+      user.new_working_day
+
+      expect(user.current_working_day).to eq(Date.today)
+      expect(user.last_working_day).to eq(Date.yesterday)
+    end
+
+    context "when the user has in progress tasks" do
+      let! (:tasks) { FactoryBot.create_list(:task, 3, :project => user.default_project, :state => 'in_progress') }
+
+      it "resets them to 'new'" do
+        user.new_working_day
+
+        tasks.each(&:reload)
+        expect(tasks.all? {|t| t.state == 'new'}).to eq(true)
+      end
+    end
+  end
 end
