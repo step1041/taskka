@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import AddTask from './add-task';
 import TaskList from './task-list';
 
 const mapStateToProps = (state) => ({

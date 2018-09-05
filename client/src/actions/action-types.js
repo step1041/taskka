@@ -3,6 +3,9 @@ const ACTION_TYPES = {
     SET: 'ACCESS_TOKEN.SET',
     REMOVE: 'ACCESS_TOKEN.REMOVE',
   },
+  APP: {
+    APP_START: 'APP.APP_START',
+  },
   PROJECTS: {
     SET: 'PROJECTS.SET',
     GET: 'PROJECTS.GET',
