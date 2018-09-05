@@ -5,7 +5,7 @@ import AddTask from './add-task';
 import TaskList from './task-list';
 
 const mapStateToProps = (state) => ({
-  tasks: state.tasks.filter((task) => task.state === 'new'),
+  tasks: state.tasks.filter((task) => task.state === 'new').valueSeq(),
 });
 
 class View extends Component {

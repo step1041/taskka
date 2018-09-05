@@ -1,31 +1,33 @@
-import {List} from 'immutable';
+import {Map} from 'immutable';
 import ACTION_TYPES from '../actions/action-types';
 
-const initState = List();
+const initState = Map();
 
 const tasksReducer = (state = initState, action) => {
-  let index;
+  let tasks;
+  let task;
 
   switch (action.type) {
     case ACTION_TYPES.USER.LOGOUT:
       return initState;
 
+    case ACTION_TYPES.PROJECTS.SET_CURRENT:
+      action.data.tasks = action.data.project.tasks;
+      // eslint-disable-next-line no-fallthrough
     case ACTION_TYPES.TASKS.SET:
-      return List(action.data.tasks);
+      tasks = action.data.tasks.map((task) => [task.id, task]);
+      return Map(tasks);
 
     case ACTION_TYPES.TASKS.ADD:
-      return state.push(action.data.task);
+      task = action.data.task;
+      return state.set(task.id, task);
 
     case ACTION_TYPES.TASKS.UPDATE:
-      index = state.findIndex((task) => task.id === action.data.task.id);
-      return state.set(index, action.data.task);
+      task = action.data.task;
+      return state.set(task.id, task);
 
     case ACTION_TYPES.TASKS.DELETE:
-      index = state.findIndex((task) => task.id === action.data.task.id);
-      return state.remove(index);
-
-    case ACTION_TYPES.PROJECTS.SET_CURRENT:
-      return List(action.data.project.tasks);
+      return state.remove(action.data.task.id);
 
     default:
       return state;

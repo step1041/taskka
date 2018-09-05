@@ -5,7 +5,7 @@ import AddTask from './add-task';
 import TaskList from './task-list';
 
 const mapStateToProps = (state) => ({
-  tasks: state.tasks.filter((task) => task.state === 'in_progress'),
+  tasks: state.tasks.filter((task) => task.state === 'in_progress').valueSeq(),
 });
 
 class View extends Component {
