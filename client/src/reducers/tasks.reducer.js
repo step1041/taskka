@@ -22,6 +22,13 @@ const tasksReducer = (state = initState, action) => {
       task = action.data.task;
       return state.set(task.id, task);
 
+    case ACTION_TYPES.TASKS.UPDATE_PENDING:
+      task = state.get(action.data.task.id);
+      return state.set(task.id, {
+        ...task,
+        ...action.data.task,
+      });
+
     case ACTION_TYPES.TASKS.UPDATE:
       task = action.data.task;
       return state.set(task.id, task);
