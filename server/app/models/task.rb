@@ -15,4 +15,8 @@ class Task < ApplicationRecord
       self.state_changes.create!(:old_state => self.state_was, :new_state => self.state)
     end
   end
+
+  def had_state_on?(state, date)
+    return self.state_changes.on(date).where(:new_state => state).count != 0
+  end
 end

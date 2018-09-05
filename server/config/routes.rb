@@ -19,4 +19,5 @@ Rails.application.routes.draw do
   post   'tasks',          to: 'tasks#create'
   patch  'tasks/:task_id', to: 'tasks#update'
   delete 'tasks/:task_id', to: 'tasks#destroy'
+  get    'tasks/scrum',    to: 'tasks#scrum'
 end

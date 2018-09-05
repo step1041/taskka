@@ -197,4 +197,81 @@ describe TasksController do
       end
     end
   end
+
+  describe "GET #scrum" do
+    it "calls authorize" do
+      expect(controller).to receive(:authorize).and_call_original
+      get :scrum
+    end
+
+    context "when authorized" do
+      let(:user) { FactoryBot.create(:user, :last_working_day => Date.yesterday, :current_working_day => Date.today) }
+
+      before { authorize_user(user) }
+
+      it "reports tasks that were worked on on the last working day" do
+        tasks = FactoryBot.create_list(:task, 3, :project => user.default_project, :state => "in_progress")
+        tasks.each do |task|
+          task.state_changes.create!(
+            :old_state => 'new',
+            :new_state => 'in_progress',
+            :created_at => Date.yesterday.at_midday
+          )
+        end
+
+        get :scrum
+
+        body = JSON.parse(response.body)
+        expect(body["yesterday"]["worked_on"]).to eq(JSON.parse(tasks.to_json))
+      end
+
+      it "reports tasks that were completed on the last working day" do
+        tasks = FactoryBot.create_list(:task, 3, :project => user.default_project, :state => "complete")
+        tasks.each do |task|
+          task.state_changes.create!(
+            :old_state => 'new',
+            :new_state => 'complete',
+            :created_at => Date.yesterday.at_midday
+          )
+        end
+
+        get :scrum
+
+        body = JSON.parse(response.body)
+        expect(body["yesterday"]["completed"]).to eq(JSON.parse(tasks.to_json))
+      end
+
+      it "reports tasks that were worked on on the current working day" do
+        tasks = FactoryBot.create_list(:task, 3, :project => user.default_project, :state => "in_progress")
+        tasks.each do |task|
+          task.state_changes.create!(
+            :old_state => 'new',
+            :new_state => 'in_progress',
+            :created_at => Date.today.at_midday
+          )
+        end
+
+        get :scrum
+
+        body = JSON.parse(response.body)
+        expect(body["today"]["worked_on"]).to eq(JSON.parse(tasks.to_json))
+      end
+
+      it "reports tasks that were completed on the current working day" do
+        tasks = FactoryBot.create_list(:task, 3, :project => user.default_project, :state => "complete")
+        tasks.each do |task|
+          task.state_changes.create!(
+            :old_state => 'new',
+            :new_state => 'complete',
+            :created_at => Date.today.at_midday
+          )
+        end
+
+        get :scrum
+
+        body = JSON.parse(response.body)
+        expect(body["today"]["completed"]).to eq(JSON.parse(tasks.to_json))
+      end
+    end
+  end
 end
