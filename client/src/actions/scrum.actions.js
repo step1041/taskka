@@ -2,6 +2,10 @@ import TaskkaApiClient from '../lib/taskka-api-client';
 import ACTION_TYPES from './action-types';
 
 export const startScrum = (left_day, right_day) => ((dispatch) => {
+  dispatch({
+    type: ACTION_TYPES.SCRUM.START,
+  });
+
   left_day = left_day.format();
   right_day = right_day.format();
 

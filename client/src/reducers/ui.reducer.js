@@ -33,6 +33,12 @@ const uiReducer = (state = initState, action) => {
         return state;
       }
 
+    case ACTION_TYPES.SCRUM.START:
+      return {
+        ...state,
+        currentProjectId: null,
+      };
+
     case ACTION_TYPES.PROJECTS.SET_CURRENT:
       return {
         ...state,

@@ -21,10 +21,10 @@ class UserInfo extends Component {
     return (
       <div className={"user-info"}>
         {user.username && (
-          <span>Welcome {user.username} | </span>
+          <span className={"nav-text"}>Welcome {user.username}</span>
         )}
 
-        <Link className={"logout-link"} to={'/logout'}>Logout</Link>
+        <Link className={"nav-link"} to={'/logout'}>Logout</Link>
       </div>
     )
   }

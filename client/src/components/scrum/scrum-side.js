@@ -15,15 +15,19 @@ const mapStateToProps = (state, ownProps) => ({
 class View extends Component {
   render() {
     return (
-      <div className={"scrum-side"}>
+      <div className={`scrum-side ${this.props.side}`}>
         {this.dateHeader()}
         {this.props.tasks_pending && (<div>Loading...</div>)}
         {!this.props.tasks_pending && (
           <div>
-            <h3>Worked on</h3>
-            {this.workedOnTasks().map((task) => (<ScrumTask task={task} />))}
-            <h3>Completed</h3>
-            {this.completedTasks().map((task) => (<ScrumTask task={task} />))}
+            <div>
+              <h3>Worked on</h3>
+              {this.workedOnTasks().map((task) => (<ScrumTask task={task} key={task.id}/>))}
+            </div>
+            <div>
+              <h3>Completed</h3>
+              {this.completedTasks().map((task) => (<ScrumTask task={task} key={task.id}/>))}
+            </div>
           </div>
         )}
       </div>

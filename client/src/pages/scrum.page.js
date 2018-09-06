@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
 
 import ScrumSide from '../components/scrum/scrum-side';
+import PageHeader from '../components/ui/page-header';
 
 import {startScrum} from '../actions/scrum.actions';
 
 import './scrum.page.scss';
-import moment from 'moment';
-import PageHeader from '../components/ui/page-header';
 
 const mapStateToProps = () => ({});
 
@@ -21,9 +21,9 @@ class View extends Component {
 
   render() {
     return (
-      <div>
+      <div className={'scrum-page'}>
         <PageHeader>
-          <div className={'left-side'}>
+          <div className={'header-left'}>
             <h1>Scrum</h1>
           </div>
         </PageHeader>

@@ -11,8 +11,8 @@ class View extends Component {
 
     return (
       <div className={"scrum-task"}>
-        <div><strong>{task.project.name}:</strong> {task.name}</div>
-        <div>{task.notes}</div>
+        <strong>{task.project.name}:</strong> {task.name}
+        <pre>{task.notes}</pre>
       </div>
     );
   }

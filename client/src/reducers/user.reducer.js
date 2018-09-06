@@ -7,7 +7,6 @@ const userReducer = (state = initState, action) => {
     case ACTION_TYPES.USER.LOGOUT:
       return initState;
 
-    case ACTION_TYPES.USER.LOGIN:
     case ACTION_TYPES.USER.SET:
       return action.data.user;
 

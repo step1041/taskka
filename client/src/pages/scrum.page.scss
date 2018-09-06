@@ -1,0 +1,27 @@
+.scrum-page {
+  display: grid;
+
+  grid-template-areas:
+    'header'
+    'left'
+    'right';
+
+  .page-header {
+    grid-area: header;
+  }
+
+  .scrum-side.left {
+    grid-area: left;
+  }
+
+  .scrum-side.right {
+    grid-area: right;
+  }
+
+  @media(min-width: 1000px) {
+    grid-template-columns: 50% 50%;
+    grid-template-areas:
+      'header header'
+      'left   right';
+  }
+}

@@ -4,8 +4,8 @@ import {Route, Redirect} from 'react-router';
 
 import ConnectedSwitch from '../lib/connected-switch';
 
-import UserInfo from '../components/user/user-info';
 import ProjectsPanel from '../components/projects/projects-panel';
+import NavBar from '../components/ui/nav-bar';
 
 import LogoutPage from '../pages/logout.page';
 import TasksPage from '../pages/tasks.page';
@@ -42,12 +42,6 @@ class MainLayout extends Component {
       <div className={'click-shroud'} onClick={this.toggleProjectsPanel} />
     );
 
-    const ProjectsPanelToggle = () => (
-      <div className={'projects-panel-toggle'} onClick={this.toggleProjectsPanel}>
-        Projects
-      </div>
-    );
-
     return (
       <div className={className}>
         <div className={'projects'}>
@@ -58,13 +52,7 @@ class MainLayout extends Component {
         {this.props.projectsPanelOpen && (
           <ClickShroud />
         )}
-        <div className={'header'}>
-          <div className={'app-name'}>Taskka</div>
-          {!this.props.userIsNew && (
-            <ProjectsPanelToggle />
-          )}
-          <UserInfo />
-        </div>
+        <NavBar />
         <div className={'page'}>
           <ConnectedSwitch>
             <Route path={'/logout'} component={LogoutPage} />

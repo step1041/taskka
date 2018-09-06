@@ -43,11 +43,11 @@ class ProjectHeader extends Component {
 
     return (
       <PageHeader>
-        <div className={'left-side'}>
+        <div className={'header-left'}>
           <h1>{this.props.project.name}</h1>
         </div>
 
-        <div className={'right-side'}>
+        <div className={'header-right'}>
           {!this.props.isDefaultProject ? (
             <div>
               <Button buttonStyle={'danger'} onClick={this.onDeleteClick}>
