@@ -10,6 +10,7 @@ import ProjectsPanel from '../components/projects/projects-panel';
 import LogoutPage from '../pages/logout.page';
 import TasksPage from '../pages/tasks.page';
 import NewUserPage from '../pages/new-user.page';
+import ScrumPage from '../pages/scrum.page';
 
 import {closeProjectsPanel, toggleProjectsPanel} from '../actions/ui.actions';
 
@@ -72,6 +73,9 @@ class MainLayout extends Component {
 
             <Route path={'/tasks'} component={TasksPage} />
 
+            <Route path={'/scrum/:left_day/:right_day'} component={ScrumPage} />
+            <Route path={'/scrum'}>{this.redirectToDefaultScrum()}</Route>
+
             <Route path={'/auth/:provider/callback'}>
               {/* User is just logging in, and they are still on the old callback route */}
               <div>Loading...</div>
@@ -102,6 +106,15 @@ class MainLayout extends Component {
     if (this.props.projectsPanelOpen && window.innerWidth >= 600) {
       this.props.dispatch(closeProjectsPanel());
     }
+  }
+
+  redirectToDefaultScrum() {
+    let days = [
+      this.props.user.last_working_day,
+      this.props.user.current_working_day,
+    ];
+
+    return (<Redirect to={`scrum/${days.join('/')}`}/>)
   }
 }
 

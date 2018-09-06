@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import './project-header.scss';
 import Button from '../ui/button';
+import PageHeader from '../ui/page-header';
+
 import {deleteProject} from '../../actions/project.actions';
 
 const mapStateToProps = (state) => ({
@@ -41,7 +42,7 @@ class ProjectHeader extends Component {
     }
 
     return (
-      <div className={'project-header'}>
+      <PageHeader>
         <div className={'left-side'}>
           <h1>{this.props.project.name}</h1>
         </div>
@@ -60,7 +61,7 @@ class ProjectHeader extends Component {
             </div>
           )}
         </div>
-      </div>
+      </PageHeader>
     );
   }
 
