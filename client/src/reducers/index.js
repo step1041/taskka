@@ -4,6 +4,7 @@ import accessTokenReducer from './access-token.reducer';
 import tasksReducer from './tasks.reducer';
 import uiReducer from './ui.reducer';
 import projectsReducer from './projects.reducer';
+import scrumReducer from './scrum.reducer';
 
 const reducers = {
   accessToken: accessTokenReducer,
@@ -12,6 +13,7 @@ const reducers = {
   user: userReducer,
   tasks: tasksReducer,
   projects: projectsReducer,
+  scrum: scrumReducer,
 };
 
 export default reducers;

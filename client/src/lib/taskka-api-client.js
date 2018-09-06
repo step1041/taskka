@@ -80,6 +80,11 @@ class TaskkaApiClient {
       .then(({user}) => user);
   }
 
+  static getScrumTasks(day) {
+    return this.get(`/user/scrum/${day}`)
+      .then(({tasks}) => tasks);
+  }
+
   /* ==== basic requests stuff ==== */
 
   static get(path) {
