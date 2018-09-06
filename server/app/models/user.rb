@@ -12,7 +12,8 @@ class User < ApplicationRecord
       :default_project_id,
     ]
 
-    options[:except] ||= [
+    options[:except] ||= []
+    options[:except] += [
       :google_token,
       :google_id,
     ]
@@ -47,6 +48,10 @@ class User < ApplicationRecord
 
   def default_project_id
     self.default_project.id
+  end
+
+  def scrum_tasks_for(date)
+    return self.tasks.where_state_changed_on(date)
   end
 
   def new_working_day

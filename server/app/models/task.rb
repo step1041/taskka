@@ -2,6 +2,12 @@ class Task < ApplicationRecord
   belongs_to :project
   has_many :state_changes, :dependent => :destroy
 
+  scope :where_state_changed_on, -> (date) do
+    joins(:state_changes)
+      .group("tasks.id")
+      .where(:state_changes => { :created_at => date.midnight..date.end_of_day })
+  end
+
   validates :name, presence: true
   validates :state, presence: true
 

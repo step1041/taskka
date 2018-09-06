@@ -3,9 +3,10 @@ Rails.application.routes.draw do
 
   post 'auth/:provider/verify', to: 'auth#verify'
 
-  get    'user',         to: 'user#view'
-  patch  'user',         to: 'user#update'
-  post   'user/new_day', to: 'user#new_day'
+  get    'user',             to: 'user#view'
+  patch  'user',             to: 'user#update'
+  post   'user/new_day',     to: 'user#new_day'
+  get    'user/scrum/:date', to: 'user#scrum'
 
   get    'projects',             to: 'projects#index'
   post   'projects',             to: 'projects#create'

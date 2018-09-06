@@ -54,34 +54,6 @@ class TasksController < ApplicationController
     render json: { task: task }
   end
 
-  def scrum
-    tasks = current_user.tasks
-      .joins(:state_changes)
-      .group("tasks.id")
-      .where("DATE(state_changes.created_at) IN (?)", [
-        current_user.last_working_day,
-        current_user.current_working_day
-      ])
-
-    render json: {
-      yesterday: {
-        worked_on: tasks.select do |task|
-          task.had_state_on?('in_progress', current_user.last_working_day) &&
-            !task.had_state_on?('complete', current_user.last_working_day)
-        end,
-        completed: tasks.select { |task| task.had_state_on?('complete', current_user.last_working_day) },
-      },
-      today: {
-        worked_on: tasks.select do |task|
-          task.had_state_on?('in_progress', current_user.current_working_day) &&
-            !task.had_state_on?('complete', current_user.current_working_day)
-        end,
-        completed: tasks.select { |task| task.had_state_on?('complete', current_user.current_working_day) },
-        avaliable: tasks.where(:state => 'new'),
-      }
-    }
-  end
-
   private
 
   def task_params

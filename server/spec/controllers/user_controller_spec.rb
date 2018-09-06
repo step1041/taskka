@@ -87,4 +87,65 @@ describe UserController do
       end
     end
   end
+
+  describe "GET #scrum" do
+    let(:target_date) { Date.yesterday }
+
+    it "calls authorize" do
+      expect(controller).to receive(:authorize).and_call_original
+      get :scrum, :params => { :date => target_date}
+    end
+
+    context "when authorized" do
+      let(:user) { FactoryBot.create(:user) }
+
+      before { authorize_user(user) }
+
+      context "when the day had tasks that were worked on" do
+        let! (:included_tasks) { FactoryBot.create_list(:task, 3, :project => user.default_project) }
+        let! (:excluded_tasks) { FactoryBot.create_list(:task, 3, :project => user.default_project) }
+
+        before do
+          included_tasks.each do |task|
+            task.state_changes.create!(
+              :old_state => 'new',
+              :new_state => 'in_progress',
+              :created_at => target_date.at_midday
+            )
+          end
+        end
+
+        it "reports tasks that were worked on" do
+          get :scrum, :params => { :date => target_date }
+
+          body = JSON.parse(response.body)
+          expect(body["tasks"].collect { |t| t["id"] }).to include(*included_tasks.collect(&:id))
+          expect(body["tasks"].collect { |t| t["id"] }).not_to include(*excluded_tasks.collect(&:id))
+        end
+      end
+
+      context "when the day had tasks that were completed" do
+        let! (:included_tasks) { FactoryBot.create_list(:task, 3, :project => user.default_project) }
+        let! (:excluded_tasks) { FactoryBot.create_list(:task, 3, :project => user.default_project) }
+
+        before do
+          included_tasks.each do |task|
+            task.state_changes.create!(
+              :old_state => 'new',
+              :new_state => 'complete',
+              :created_at => target_date.at_midday
+            )
+          end
+        end
+
+        it "reports tasks that were completed" do
+          get :scrum, :params => { :date => target_date }
+
+          body = JSON.parse(response.body)
+          expect(body["tasks"].collect { |t| t["id"] }).to include(*included_tasks.collect(&:id))
+          expect(body["tasks"].collect { |t| t["id"] }).not_to include(*excluded_tasks.collect(&:id))
+        end
+      end
+    end
+  end
 end
