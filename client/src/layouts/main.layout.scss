@@ -8,7 +8,7 @@
   grid-template-rows: 50px auto;
   grid-template-columns: 200px auto;
   grid-template-areas:
-    'header header'
+    'nav-bar nav-bar'
     'projects page'
   ;
 
@@ -25,36 +25,8 @@
     }
   }
 
-  .header {
-    grid-area: header;
-
-    color: white;
-    background: grey;
-
-    height: 50px;
-
-    .app-name {
-      background-color: black;
-      display: inline-block;
-      padding: 16px;
-      margin-right: 16px;
-    }
-
-    .projects-panel-toggle {
-      display: none;
-
-      padding: 16px;
-      margin: -16px;
-
-      cursor: default;
-    }
-
-    .user-info {
-      display: inline-block;
-      float: right;
-
-      padding: 16px;
-    }
+  .nav-bar {
+    grid-area: nav-bar;
   }
 
   .page {
@@ -72,8 +44,8 @@
 @media(max-width: 600px) {
   .main-layout {
     grid-template-areas:
-      'header header'
-      'page   page'
+      'nav-bar nav-bar'
+      'page    page'
     ;
 
     .projects {
@@ -90,11 +62,6 @@
     }
 
     &.menu-open {
-      .projects-panel-toggle {
-        background-color: black;
-        color: white;
-      }
-
       .projects {
         left: 0;
       }
@@ -106,12 +73,6 @@
 
         width: 100vw;
         height: 100vh;
-      }
-    }
-
-    .header {
-      .projects-panel-toggle {
-        display: inline-block;
       }
     }
   }

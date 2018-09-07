@@ -1,0 +1,25 @@
+.page-header {
+  position: relative;
+
+  background-color: darkgray;
+
+  margin: -16px;
+  margin-bottom: 16px;
+  padding: 0 16px;
+
+  .header-left {
+    display: inline-block;
+  }
+
+  .header-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    padding: 8px;
+  }
+}

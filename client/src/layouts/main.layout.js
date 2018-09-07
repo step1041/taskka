@@ -4,12 +4,13 @@ import {Route, Redirect} from 'react-router';
 
 import ConnectedSwitch from '../lib/connected-switch';
 
-import UserInfo from '../components/user/user-info';
 import ProjectsPanel from '../components/projects/projects-panel';
+import NavBar from '../components/ui/nav-bar';
 
 import LogoutPage from '../pages/logout.page';
 import TasksPage from '../pages/tasks.page';
 import NewUserPage from '../pages/new-user.page';
+import ScrumPage from '../pages/scrum.page';
 
 import {closeProjectsPanel, toggleProjectsPanel} from '../actions/ui.actions';
 
@@ -41,12 +42,6 @@ class MainLayout extends Component {
       <div className={'click-shroud'} onClick={this.toggleProjectsPanel} />
     );
 
-    const ProjectsPanelToggle = () => (
-      <div className={'projects-panel-toggle'} onClick={this.toggleProjectsPanel}>
-        Projects
-      </div>
-    );
-
     return (
       <div className={className}>
         <div className={'projects'}>
@@ -57,13 +52,7 @@ class MainLayout extends Component {
         {this.props.projectsPanelOpen && (
           <ClickShroud />
         )}
-        <div className={'header'}>
-          <div className={'app-name'}>Taskka</div>
-          {!this.props.userIsNew && (
-            <ProjectsPanelToggle />
-          )}
-          <UserInfo />
-        </div>
+        <NavBar />
         <div className={'page'}>
           <ConnectedSwitch>
             <Route path={'/logout'} component={LogoutPage} />
@@ -71,6 +60,9 @@ class MainLayout extends Component {
             <Route path={'/user/new'} component={NewUserPage} />
 
             <Route path={'/tasks'} component={TasksPage} />
+
+            <Route path={'/scrum/:left_day/:right_day'} component={ScrumPage} />
+            <Route path={'/scrum'}>{this.redirectToDefaultScrum()}</Route>
 
             <Route path={'/auth/:provider/callback'}>
               {/* User is just logging in, and they are still on the old callback route */}
@@ -102,6 +94,15 @@ class MainLayout extends Component {
     if (this.props.projectsPanelOpen && window.innerWidth >= 600) {
       this.props.dispatch(closeProjectsPanel());
     }
+  }
+
+  redirectToDefaultScrum() {
+    let days = [
+      this.props.user.last_working_day,
+      this.props.user.current_working_day,
+    ];
+
+    return (<Redirect to={`scrum/${days.join('/')}`}/>)
   }
 }
 

@@ -9,7 +9,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   return {
-    tasks: state.tasks.filter((task) => task.state === ownProps.state)
+    tasks: state.tasks.filter((task) => task.state === ownProps.state).valueSeq()
   }
 };
 

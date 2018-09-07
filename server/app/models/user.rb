@@ -8,20 +8,17 @@ class User < ApplicationRecord
   after_create :create_default_project
 
   def serializable_hash(options)
-    if !options[:methods]
-      options[:methods] = [
-        :default_project_id,
-      ]
-    end
+    options[:methods] ||= [
+      :default_project_id,
+    ]
 
-    if !options[:except]
-      options[:except] = [
-        :google_token,
-        :google_id,
-      ]
-    end
+    options[:except] ||= []
+    options[:except] += [
+      :google_token,
+      :google_id,
+    ]
 
-    super(options)
+    super
   end
 
   def generate_new_access_token
@@ -51,5 +48,17 @@ class User < ApplicationRecord
 
   def default_project_id
     self.default_project.id
+  end
+
+  def scrum_tasks_for(date)
+    return self.tasks.where_state_changed_on(date)
+  end
+
+  def new_working_day
+    self.last_working_day = self.current_working_day
+    self.current_working_day = Date.today
+    self.save!
+
+    self.tasks.where(:state => "in_progress").update_all(:state => 'new')
   end
 end

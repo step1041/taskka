@@ -75,6 +75,16 @@ class TaskkaApiClient {
       .then(({task}) => task);
   }
 
+  static newWorkingDay() {
+    return this.post(`/user/new_day`)
+      .then(({user}) => user);
+  }
+
+  static getScrumTasks(day) {
+    return this.get(`/user/scrum/${day}`)
+      .then(({tasks}) => tasks);
+  }
+
   /* ==== basic requests stuff ==== */
 
   static get(path) {

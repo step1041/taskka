@@ -1,0 +1,64 @@
+.nav-bar {
+  color: white;
+  background: grey;
+
+  height: 50px;
+
+  .app-name {
+    display: inline-block;
+
+    cursor: default;
+
+    padding: 16px;
+
+    background-color: black;
+  }
+
+  .left-area {
+    padding: 16px;
+    padding-left: 0;
+  }
+
+  .right-area {
+    float: right;
+
+    padding: 16px;
+    padding-right: 0;
+  }
+
+  .nav-link,
+  .nav-text {
+    display: inline-block;
+
+    cursor: default;
+
+    padding: 16px;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    cursor: pointer;
+
+    color: inherit;
+
+    &.active {
+      background-color: black;
+    }
+
+    &:hover {
+      background-color: lightgray;
+      color: black;
+    }
+  }
+
+  .projects-panel-toggle {
+    display: none;
+  }
+
+  @media(max-width: 600px) {
+    .projects-panel-toggle {
+      display: inline-block;
+    }
+  }
+}
+

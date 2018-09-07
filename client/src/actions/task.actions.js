@@ -20,6 +20,11 @@ export const addTask = (projectId, task) => ((dispatch) => {
 });
 
 export const updateTask = (task) => ((dispatch) => {
+  dispatch({
+    type: ACTION_TYPES.TASKS.UPDATE_PENDING,
+    data: {task},
+  });
+
   return TaskkaApiClient
     .updateTask(task)
     .then((task) => {

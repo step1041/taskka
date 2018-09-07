@@ -3,8 +3,10 @@ Rails.application.routes.draw do
 
   post 'auth/:provider/verify', to: 'auth#verify'
 
-  get    'user', to: 'user#view'
-  patch  'user', to: 'user#update'
+  get    'user',             to: 'user#view'
+  patch  'user',             to: 'user#update'
+  post   'user/new_day',     to: 'user#new_day'
+  get    'user/scrum/:date', to: 'user#scrum'
 
   get    'projects',             to: 'projects#index'
   post   'projects',             to: 'projects#create'
@@ -19,4 +21,5 @@ Rails.application.routes.draw do
   post   'tasks',          to: 'tasks#create'
   patch  'tasks/:task_id', to: 'tasks#update'
   delete 'tasks/:task_id', to: 'tasks#destroy'
+  get    'tasks/scrum',    to: 'tasks#scrum'
 end

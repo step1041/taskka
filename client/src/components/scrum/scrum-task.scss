@@ -1,0 +1,9 @@
+.scrum-task {
+  margin: 16px;
+
+  border-bottom: 1px solid lightgray;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

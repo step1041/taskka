@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {setUser} from '../actions/user.actions';
-
-import errorHandler from '../lib/error-handler';
-import TaskkaApiClient from '../lib/taskka-api-client';
+import {appStart} from '../actions/app.actions';
 
 import MainLayout from './main.layout';
 import LoggedOutLayout from './logged-out.layout';
@@ -17,10 +14,7 @@ const mapStateToProps = (state) => ({
 class AppLayout extends Component {
   componentDidMount() {
     if (!this.props.user && this.props.accessToken) {
-      TaskkaApiClient
-        .getCurrentUser()
-        .then((user) => this.props.dispatch(setUser(user)))
-        .catch(errorHandler);
+      this.props.dispatch(appStart());
     }
   }
 

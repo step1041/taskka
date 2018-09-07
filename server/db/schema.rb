@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_02_182415) do
+ActiveRecord::Schema.define(version: 2018_09_04_020623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,17 @@ ActiveRecord::Schema.define(version: 2018_09_02_182415) do
     t.bigint "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "state_changes", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.string "old_state"
+    t.string "new_state", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["new_state"], name: "index_state_changes_on_new_state"
+    t.index ["old_state"], name: "index_state_changes_on_old_state"
+    t.index ["task_id"], name: "index_state_changes_on_task_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -40,6 +51,8 @@ ActiveRecord::Schema.define(version: 2018_09_02_182415) do
     t.string "google_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "current_working_day"
+    t.date "last_working_day"
     t.index ["access_token"], name: "index_users_on_access_token"
     t.index ["google_id"], name: "index_users_on_google_id"
     t.index ["google_token"], name: "index_users_on_google_token"
@@ -47,5 +60,6 @@ ActiveRecord::Schema.define(version: 2018_09_02_182415) do
   end
 
   add_foreign_key "projects", "users", column: "owner_id"
+  add_foreign_key "state_changes", "tasks"
   add_foreign_key "tasks", "projects"
 end

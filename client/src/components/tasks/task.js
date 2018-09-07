@@ -29,6 +29,8 @@ class Task extends Component {
     this.onTaskStateChange = this.onTaskStateChange.bind(this);
     this.onTaskNameChange = this.onTaskNameChange.bind(this);
     this.onTaskNotesChange = this.onTaskNotesChange.bind(this);
+    this.startProgress = this.startProgress.bind(this);
+    this.stopProgress = this.stopProgress.bind(this);
   }
 
   componentDidMount() {
@@ -63,13 +65,9 @@ class Task extends Component {
             onChange={this.onTaskNameChange}
             disabled={this.state.submitting}
           />
-          <button
-            onClick={this.onTaskDelete}
-            className={'task-delete-btn'}
-            disabled={this.state.submitting}
-          >
-            {this.state.confirmingDelete ? 'Confirm?' : 'Delete'}
-          </button>
+
+          {this.progressButton()}
+          {this.deleteButton()}
         </div>
 
         {
@@ -173,6 +171,44 @@ class Task extends Component {
           this.setState({submitting: false});
         }
       });
+  }
+
+  deleteButton() {
+    return (
+      <button
+        onClick={this.onTaskDelete}
+        className={'task-delete-btn'}
+        disabled={this.state.submitting}
+      >
+        {this.state.confirmingDelete ? 'Confirm?' : 'Delete'}
+      </button>
+    )
+  }
+
+  progressButton() {
+    switch (this.state.task.state) {
+      case "new":
+      case "started":
+        return (<button onClick={this.startProgress}>Start Progress</button>);
+      case "in_progress":
+        return (<button onClick={this.stopProgress}>Stop Progress</button>);
+      default:
+        return (null);
+    }
+  }
+
+  startProgress() {
+    this.props.dispatch(updateTask({
+      id: this.state.task.id,
+      state: 'in_progress',
+    }));
+  }
+
+  stopProgress() {
+    this.props.dispatch(updateTask({
+      id: this.state.task.id,
+      state: 'new',
+    }));
   }
 }
 

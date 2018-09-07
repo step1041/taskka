@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import './project-header.scss';
 import Button from '../ui/button';
+import PageHeader from '../ui/page-header';
+
 import {deleteProject} from '../../actions/project.actions';
 
 const mapStateToProps = (state) => ({
@@ -41,12 +42,12 @@ class ProjectHeader extends Component {
     }
 
     return (
-      <div className={'project-header'}>
-        <div className={'left-side'}>
+      <PageHeader>
+        <div className={'header-left'}>
           <h1>{this.props.project.name}</h1>
         </div>
 
-        <div className={'right-side'}>
+        <div className={'header-right'}>
           {!this.props.isDefaultProject ? (
             <div>
               <Button buttonStyle={'danger'} onClick={this.onDeleteClick}>
@@ -60,7 +61,7 @@ class ProjectHeader extends Component {
             </div>
           )}
         </div>
-      </div>
+      </PageHeader>
     );
   }
 

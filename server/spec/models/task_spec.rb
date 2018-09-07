@@ -60,4 +60,30 @@ describe Task do
       end
     end
   end
+
+  describe "#had_state_on?" do
+    let (:task) { FactoryBot.create(:task) }
+    let (:state) { "in_progress" }
+    let (:date) { DateTime.yesterday }
+
+    context "when the task had the state on that day" do
+      before do
+        task.state_changes.create!(:old_state => task.state, :new_state => state, :created_at => date)
+      end
+
+      it "returns true" do
+        expect(task.had_state_on?(state, date)).to eq(true)
+      end
+    end
+
+    context "when the task did not have the state on that day" do
+      before do
+        task.state_changes.create!(:old_state => task.state, :new_state => "complete", :created_at => date)
+      end
+
+      it "returns false" do
+        expect(task.had_state_on?(state, date)).to eq(false)
+      end
+    end
+  end
 end
