@@ -11,7 +11,7 @@ export const appStart = () => ((dispatch) => {
   return TaskkaApiClient
     .getCurrentUser()
     .then((user) => {
-      let isNewDay = moment(user.current_working_day).isBefore(moment(), 'day');
+      let isNewDay = user.current_working_day === null || moment(user.current_working_day).isBefore(moment(), 'day');
       if (isNewDay) {
         return dispatch(newWorkingDay());
       }

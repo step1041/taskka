@@ -6,13 +6,10 @@ export const startScrum = (left_day, right_day) => ((dispatch) => {
     type: ACTION_TYPES.SCRUM.START,
   });
 
-  left_day = left_day.format();
-  right_day = right_day.format();
-
   return Promise
     .all([
-      dispatch(setDay('left', left_day)),
-      dispatch(setDay('right', right_day)),
+      left_day ? dispatch(setDay('left', left_day.format())) : Promise.resolve(),
+      right_day ? dispatch(setDay('right', right_day.format())) : Promise.resolve(),
     ]);
 });
 
@@ -21,6 +18,10 @@ export const setDay = (side, date) => ((dispatch) => {
     type: ACTION_TYPES.SCRUM.SET_DAY + '.' + side.toUpperCase(),
     data: {date},
   });
+
+  if (date === null) {
+    return Promise.resolve();
+  }
 
   return TaskkaApiClient.getScrumTasks(date)
     .then((tasks) => dispatch(setTasks(side, tasks)));

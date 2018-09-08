@@ -14,7 +14,11 @@ const mapStateToProps = () => ({});
 class View extends Component {
   componentDidMount() {
     let left_day = moment(this.props.match.params.left_day);
-    let right_day = moment(this.props.match.params.right_day);
+
+    let right_day = null;
+    if (this.props.match.params.right_day) {
+      right_day = moment(this.props.match.params.right_day);
+    }
 
     this.props.dispatch(startScrum(left_day, right_day));
   }

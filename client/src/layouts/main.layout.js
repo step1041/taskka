@@ -61,7 +61,7 @@ class MainLayout extends Component {
 
             <Route path={'/tasks'} component={TasksPage} />
 
-            <Route path={'/scrum/:left_day/:right_day'} component={ScrumPage} />
+            <Route path={'/scrum/:left_day/:right_day?'} component={ScrumPage} />
             <Route path={'/scrum'}>{this.redirectToDefaultScrum()}</Route>
 
             <Route path={'/auth/:provider/callback'}>
@@ -97,12 +97,19 @@ class MainLayout extends Component {
   }
 
   redirectToDefaultScrum() {
-    let days = [
-      this.props.user.last_working_day,
-      this.props.user.current_working_day,
-    ];
+    let days;
 
-    return (<Redirect to={`scrum/${days.join('/')}`}/>)
+    if (this.props.user.last_working_day === null) {
+      days = this.props.user.current_working_day;
+    }
+    else {
+      days = [
+        this.props.user.last_working_day,
+        this.props.user.current_working_day,
+      ].join('/');
+    }
+
+    return (<Redirect to={`scrum/${days}`}/>)
   }
 }
 

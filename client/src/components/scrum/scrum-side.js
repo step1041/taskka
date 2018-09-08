@@ -14,6 +14,12 @@ const mapStateToProps = (state, ownProps) => ({
 
 class View extends Component {
   render() {
+    console.log(this.props);
+
+    if (!this.props.date.isValid()) {
+      return null;
+    }
+
     return (
       <div className={`scrum-side ${this.props.side}`}>
         {this.dateHeader()}
