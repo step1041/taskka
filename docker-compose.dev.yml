@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+  # The Application
+  app_dev:
+    image: ${REG}/${IMAGE}:${TAG}
+    working_dir: /var/www
+    links:
+      - db_dev:db
+    volumes:
+      - ./src:/var/www
+      - ./build/entrypoint.sh:/entrypoint.sh
+    ports:
+      - 8089:80
+      - 80:80
+    env_file:
+      - ./build/env/dev
+    command:
+      ['/entrypoint.sh', 'dev']
+
+  # The Database
+  db_dev:
+    image: mysql:5.6
+    volumes:
+      - ./dbdata:/var/lib/mysql
+      - ./build/db/EukanubaPointsJun21.sql:/docker-entrypoint-initdb.d/EukanubaPointsJun21.sql
+    environment:
+      - "MYSQL_DATABASE=EukanubaPoints"
+      - "MYSQL_ROOT_PASSWORD=root"
+    ports:
+        - "33061:3306"
